@@ -52,17 +52,30 @@ def add_row_to_notion_database(section_dict):
             # ページのプロパティを指定する
             "properties": {
                 "vocaburaly": {
-                    "title": [
-                        {
-                            "text": {
-                                "content": section_dict.get("Phrase", "")
-                            }
+                    "title": [{
+                        "text": {
+                            "content": section_dict.get("Phrase", "")
                         }
-                    ]},
+                    }]
+                },
                 "Frequency": {
                     "select": {
                         "name": section_dict.get("Frequency of use", "")
                     }
+                },
+                "Reference": {
+                    "rich_text": [{
+                        'annotations': {'bold': True,
+                                            'code': False,
+                                            'color': 'default',
+                                            'italic': False,
+                                            'strikethrough': False,
+                                            'underline': False},
+                        "type": "text",
+                        "text": {
+                            "content": section_dict.get("Reference", "")
+                        }
+                    }],
                 },
                 "Pronunciation": {
                     "url": section_dict.get("Pronunciation", "")
