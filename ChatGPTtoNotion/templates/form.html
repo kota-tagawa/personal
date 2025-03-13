@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notion API Example with Flask</title>
+</head>
+<body>
+    <h1>Notion API Data Entry</h1>
+    
+    <form id="textForm">
+        <textarea id="userInput" rows="10" cols="50" placeholder="Enter text..."></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="responseMessage"></p>
+
+    <script>
+        document.getElementById('textForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('userInput').value;
+
+            if (!userInput.trim()) {
+                document.getElementById('responseMessage').innerText = "Please enter some text.";
+                return;
+            }
+
+            const submitButton = document.querySelector("button[type='submit']");
+            submitButton.disabled = true;
+
+            const response = await fetch('/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: userInput })
+            });
+
+            const result = await response.json();
+
+            document.getElementById('responseMessage').innerText = result.message;
+            document.getElementById('userInput').value = "";
+            submitButton.disabled = false;
+        });
+    </script>
+</body>
+</html>

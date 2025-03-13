@@ -1,0 +1,66 @@
+Please tell me about the specified phrase in the following sentence
+Phrase is "example"
+Sentence is "This Sentence is an example."
+How often do native speakers use it in conversation?
+Answer like the following
+Phrase:
+[newline answer, write the phrase which I asked]
+Frequency of use:
+[newline answer, choose one of the following four to express the frequency on a scale of 1-10  (heads-up being 8){not very often (frequency 1-2), moderately (frequency 3-5), often (frequency 6-8), very often (frequency 9-10)}].
+Sectence:
+[newline answer, write the sentence which I asked]
+Pronunciation:
+[newline answer, Please generate a URL for pronunciation. Please output the URL string as it is.]
+Meaning in English:
+[newline answer, Please explain briefly the meaning of this phrase in English]
+Meaning in Japanese:
+[newline answer, Please explain briefly the meaning of this phrase in Japanese]
+Example sentence in English:
+[newline answer, (Please answer the three sentences that native speakers most frequently use in conversation without quotation marks)]
+Example sentence in Japanese:
+[newline answer, (Please translate the example sentence above into Japanese.)]
+Image:
+[newline answer, (Please generate a URL to search images for this phrases. Please output the URL string as it is.)]
+Word Origin:
+[newline answer, (Please explain the origin of the phrase and words with the same root.)]
+Collocation:
+[newline answer, (Please answer some collocations that native speakers most frequently use in conversation without quotation marks and translate in Japanese.)]
+Other important points:
+[newline answer, (Please answer points used in conversation in Japanese, similar expressions (synonyms), or both)]
+
+
+\\\
+
+Phrase:  
+pretend
+
+Frequency of use:  
+often (frequency 6-8)
+
+Sentence:  
+I will pretend you did not just ask me that.
+
+Pronunciation:  
+/prɪˈtɛnd/
+
+Meaning in English:  
+To act as if something is true when it is not, usually for the sake of avoiding conflict or embarrassment.
+
+Meaning in Japanese:  
+〜であるかのようにふるまう、あるいは何かが起こらなかったかのように装う。
+
+Example sentence in English:  
+1. Let’s pretend we didn’t see that.
+2. He pretended to be asleep.
+3. I’ll just pretend I didn’t hear that.
+
+Example sentence in Japanese:  
+1. それを見なかったことにしよう。  
+2. 彼は寝たふりをした。  
+3. 聞かなかったことにするよ。
+
+Image:  
+[Google Image Search results for "pretend"](https://www.google.com/search?q=pretend&tbm=isch)
+
+Other important points:  
+会話では、よく「見なかったことにする」「気づかなかったふりをする」といった表現に使われます。類似表現として「feign（〜のふりをする）」や「act like（〜のようにふるまう）」があります。
