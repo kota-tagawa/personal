@@ -1,0 +1,84 @@
+%\documentclass[11pt,a4paper,twoside,openright]{jreport} %part{}前後に空ページが入る
+\documentclass[11pt,a4paper,twoside]{jreport}	%part{}前後に空ページが入らない
+
+\usepackage[dvipdfm]{graphicx,color}
+\usepackage{latexsym}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{layout}
+\usepackage{tabularx}
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{float}
+
+\usepackage[
+  dvipdfm,
+  bookmarks=true,
+  bookmarksnumbered=true,
+  colorlinks=true]{hyperref}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+
+\definecolor{orange}{cmyk}{0,.61,.87,0}
+\definecolor{purple}{cmyk}{.2,1,0,0}
+
+\oddsidemargin          11pt
+\evensidemargin         11pt
+\topmargin               0pt
+\headheight              0pt
+\headsep                 0pt
+\topskip                11pt
+\textheight            680pt
+\textwidth             450pt
+\footskip               33pt
+\parindent              11pt
+\marginparwidth          0pt
+
+\setlength{\doublerulesep}{0.4pt}
+\setcounter{topnumber}{0}
+\setcounter{bottomnumber}{5}
+\setcounter{totalnumber}{5}
+\setcounter{tocdepth}{2}
+\setcounter{chapter}{0}
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+
+\renewcommand{\textfraction}{0.0}
+\renewcommand{\topfraction}{0.0}
+\renewcommand{\bottomfraction}{1.0}
+\renewcommand{\bibname}{参考文献}
+
+\input{numerical_definition.tex}%行列，ベクトル表記のための定義ファイル
+\begin{document}
+
+\input{cover_template.tex}        % 表紙
+\thispagestyle{empty}
+
+%\input{abstract.tex}     % 概要
+%\thispagestyle{empty}
+
+%\tableofcontents         % 目次作成コマンド
+%\thispagestyle{empty}
+
+\setcounter{page}{0}
+\input{one.tex}      % はじめに
+
+\input{two.tex}      % ワイヤーフレーム
+
+\input{three.tex}    % テクスチャ割り当て
+
+\input{four.tex}     % 特徴点マッチング
+
+\input{five.tex}     % 自己位置推定
+
+\input{six.tex}      % 屋内ナビゲーション
+
+\input{seven.tex}    % 実験
+
+\input{eight.tex}    % まとめ
+
+\input{nine.tex}     % 謝辞
+
+\input{bibliography.tex} % 参考文献
+
+\end{document}
