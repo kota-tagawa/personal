@@ -42,13 +42,18 @@ SIFT のような実数値記述子に対しては KD-tree を用いた探索を
 \section{学習ベース手法による特徴点マッチング}
 \subsection{特徴点検出}
 学習ベース手法における特徴点検出手法として SuperPoint を用いる。
-SuperPoint は畳み込みニューラルネットワークを用いて、画像中の特徴点位置と対応する記述子を同時に推定する手法である\cite{DeTone2018SuperPoint}。
-従来手法では、輝度勾配や局所構造といった人手設計された指標に基づいて，特徴点検出および記述子生成が行われるのに対し、
-大量の画像データを用いた学習による安定した特徴点検出が可能である。
+SuperPoint は、画像中の特徴点（Interest Point）とそれらに対応する記述子（Descriptor）を同時に推定する特徴点検出手法である（図\ref{four:one}）。
+画像全体を入力とする畳み込み型ネットワークとして構成されており、共有されたエンコーダによって特徴を抽出した後、特徴点検出用と記述子生成用の2つのデコーダに分岐することで、単一のフォワードパスで両者を出力する。
+この構成により、検出と記述を個別に行う手法と異なり、両タスク間で計算および特徴表現を効率的に共有することが可能となっている\cite{DeTone2018SuperPoint}。
+従来手法では、輝度勾配や局所構造といった人手設計された指標に基づいて特徴点検出が行われるのに対し、大量の画像データを用いた学習による安定した特徴点検出が可能である。
 
-
-(superpointに関する図)
-
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{figures/4/superpoint_architecture.png}
+    \caption{SuperPointのアーキテクチャ. 出典：DeTone et al.(2018)\cite{DeTone2018SuperPoint} Fig.~1}
+    \label{four:one}
+  \end{center}
+\end{figure}
 
 本研究では、入力画像および簡易モデルに対応するテクスチャ画像をグレースケール化し、SuperPoint に入力することで特徴点検出および記述子計算を行う。
 画像サイズが大きい場合には画像を複数のタイルに分割し、それぞれに対して特徴点検出を行った後、
@@ -56,12 +61,19 @@ SuperPoint は畳み込みニューラルネットワークを用いて、画像
 
 \subsection{特徴点マッチング} 
 学習ベース手法における特徴点マッチング手法として SuperGlue を用いる。
-SuperGlue は特徴点集合をグラフ構造として扱い、自己注意機構を用いて特徴点間の対応関係を推定する学習ベースのマッチング手法である\cite{Sarlin2020SuperGlue}。
+SuperGlue は、注意機構付きグラフニューラルネットワークと最適マッチング層の2つから構成される特徴点マッチング手法である（図\ref{four:two}）。
+注意機構付きグラフニューラルネットワークでは、キーポイントの位置と記述子を統合した特徴表現を自己注意および相互注意を交互に用いて段階的に更新する。
+最適マッチング層では、キーポイント間のスコア行列にdustbin（いずれのキーポイントとも対応しない点を扱うための仮想ノード）を追加した上で、
+Sinkhorn アルゴリズムにより最適な部分対応を推定する\cite{Sarlin2020SuperGlue}。
 従来手法では、各特徴点を独立に対応付ける最近傍探索が行われるのに対し、特徴点集合全体の文脈情報を考慮した対応付けが可能である。
 
-
-(superglueに関する図)
-
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figures/4/superglue_architecture.png}
+    \caption{SuperGlueのアーキテクチャ. 出典：Sarlin et al.(2020)\cite{Sarlin2020SuperGlue} Fig.~3}
+    \label{four:two}
+  \end{center}
+\end{figure}
 
 \subsection{マッチングの精度向上}
 SuperGlue により得られた対応点集合には、学習に基づく推定結果であるため、局所的に信頼度の低い対応点が含まれる可能性がある。

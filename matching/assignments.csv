@@ -1,0 +1,5 @@
+student_id,subject,teacher_id,slot
+S001,Math,T001,0801A
+S001,English,T001,0801B
+S002,English,T002,0801B
+S003,Math,T003,0802B
