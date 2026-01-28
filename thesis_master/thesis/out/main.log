@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.sjis) (TeX Live 2025) (preloaded format=platex 2025.4.6)  26 JAN 2026 15:50
+This is e-upTeX, Version 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.sjis) (TeX Live 2025) (preloaded format=platex 2025.4.6)  28 JAN 2026 19:51
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -419,16 +419,19 @@ File: figures/2/model.png Graphic file (type bmp)
 [7
 
 ]
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10.95> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 117.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10.95> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 117.
-
-LaTeX Warning: Citation `sugaya2024' on page 8 undefined on input line 117.
-
+File: figures/3/axis.png Graphic file (type bmp)
+<figures/3/axis.png>
 
 
 [8]
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10.95> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 127.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10.95> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 127.
+
+LaTeX Warning: Citation `sugaya2024' on page 9 undefined on input line 127.
+
+
 
 [9]
 
@@ -440,57 +443,78 @@ LaTeX Warning: Citation `sugaya2024' on page 8 undefined on input line 117.
 
 [12
 
-])
+]) (./five.tex
 
-[13] (./five.tex
-
-[14]
+[13]
 第 5 章
 
-LaTeX Warning: Citation `matsushita2024' on page 15 undefined on input line 37.
 
-
-
-[15
+[14
 
 ]) (./six.tex
 
-[16]
+[15]
 第 6 章
+File: figures/6/axis2.png Graphic file (type bmp)
+<figures/6/axis2.png>
 
 
-[17
+[16
 
-]) (./seven.tex
+]
+File: figures/6/arkit_camaxis.png Graphic file (type bmp)
+<figures/6/arkit_camaxis.png>
+
+
+[17]
+File: figures/6/flow.png Graphic file (type bmp)
+<figures/6/flow.png>
+
 
 [18]
+
+[19])
+
+[20] (./seven.tex
+
+[21]
 第 7 章
 
 
-[19
+[22
 
 ]) (./eight.tex
 
-[20]
+[23]
 第 8 章
 ) (./nine.tex
 
-[21
+[24
 
 ]) (./bibliography.tex
 
-[22
+[25
 
 ]
 
-[23
+[26
 
 ]
 LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
 (Font)              No change on input line 91.
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--138
+[]\OT1/cmr/m/n/10.95 Apple Inc., ``Un-der-stand-ing World Track-ing,'' Ap-ple De-vel-oper Doc-u-men-ta-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--138
+\OT1/cmr/m/n/10.95 tion, [][]$\OT1/cmtt/m/n/10.95 https : / / developer . apple . com / documentation / arkit / world _ tracking /
+ []
+
 )
 
-[24] (out/main.aux)
+[27] (out/main.aux)
  ***********
 pLaTeX2e <2023-02-14>+1, based on
 LaTeX2e <2024-11-01> patch level 2
@@ -500,15 +524,15 @@ L3 programming layer <2025-01-18>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 59498C2231E74A4B3F6BA728E0EC4FFD;10404.
+(rerunfilecheck)             Checksum: 6375F9EFC0242254AE3D0E4A7F5EDC47;10835.
  ) 
 Here is how much of TeX's memory you used:
- 10234 strings out of 475301
- 152843 string characters out of 5768500
- 562712 words of memory out of 5000000
- 33180 multiletter control sequences out of 15000+600000
- 579549 words of font info for 118 fonts, out of 8000000 for 9000
+ 10282 strings out of 475301
+ 153848 string characters out of 5768500
+ 569592 words of memory out of 5000000
+ 33219 multiletter control sequences out of 15000+600000
+ 579717 words of font info for 119 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  72i,13n,79p,349b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on out/main.dvi (25 pages, 118692 bytes).
+Output written on out/main.dvi (28 pages, 138216 bytes).

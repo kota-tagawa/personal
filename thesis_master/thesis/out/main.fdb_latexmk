@@ -1,11 +1,11 @@
 # Fdb version 4
-["dvipdf"] 1769410241.74944 "out/main.dvi" "out/main.pdf" "out/main" 1769410242.67945 0
-  "out/main.dvi" 1769410241 118692 412133e267ed4b23a4e3dcd8ffdfe013 "latex"
+["dvipdf"] 1769597515.25501 "out/main.dvi" "out/main.pdf" "out/main" 1769597517.59331 0
+  "out/main.dvi" 1769597515 138216 a8e63b9a6f5e904f05f60263589d81e5 "latex"
   (generated)
   "out/main.pdf"
   (rewritten before read)
-["latex"] 1769410241.17425 "c:/223337/personal/thesis_master/thesis/main.tex" "out/main.dvi" "main" 1769410242.67715 0
-  "bibliography.tex" 1769395781 5389 e8ae2ad9941abfad8b84e554c696edde ""
+["latex"] 1769597514.465 "c:/223337/personal/thesis_master/thesis/main.tex" "out/main.dvi" "main" 1769597517.5906 0
+  "bibliography.tex" 1769591083 6026 26b09af487456de05b345216d1347441 ""
   "c:/223337/personal/thesis_master/thesis/main.tex" 1769361358 2065 85b9cf11f04ea14d9613596dfb29de35 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1743929076 1536 02c06700a42be0f5a28664c7273f82e7 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/goth10.tfm" 1743929218 1196 5981e79c37b2cfd27b3612a6783cd4b6 ""
@@ -46,6 +46,7 @@
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1743929056 1116 933a60c408fc0a863a92debe84b2d294 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1743929056 1120 8b7d695260f3cff42e636090a8002094 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1743929056 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
+  "c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm" 1743929056 768 1321e9409b4137d6fb428ac9dc956269 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/latex-fonts/lasy10.tfm" 1743929169 520 82a3d37183f34b6eb363a161dfc002c2 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/latex-fonts/lasy6.tfm" 1743929169 520 4889cce2180234b97cad636b6039c722 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/latex-fonts/lasy8.tfm" 1743929169 520 7bb3abb160b19e0ed6ac404bb59052b7 ""
@@ -115,18 +116,22 @@
   "figures/2/3DCG.jpg" 1768536981 11828 6856b0e792d66ae587a64c89c9e571fc ""
   "figures/2/model.png" 1768537436 766341 14e7b9ca88a57f094564dc5c57e3b9a9 ""
   "figures/2/pointscloud.jpg" 1768537104 5393 5132d0a07b211cc9f7ec7c300b165606 ""
-  "five.tex" 1769406574 6097 aadb866059e84bb2ef5ac86d2a2d5849 ""
-  "four.tex" 1769398134 7499 bcdfd5adaa8a57b9c6fa583951523a1f ""
+  "figures/3/axis.png" 1769582467 173011 b37f3a99f92fd9b9563421bede693dbf ""
+  "figures/6/arkit_camaxis.png" 1766554021 101429 84434ed7eb330e4ff13a08bbfc13dfae ""
+  "figures/6/axis2.png" 1769594801 197156 8d0eede503b11caf86d51c09682aa71a ""
+  "figures/6/flow.png" 1769593159 164351 b0751b33889bceb439c7d70e28e0381b ""
+  "five.tex" 1769591255 6313 1785baf4ede70ef497b0a6b7f8c9b7c6 ""
+  "four.tex" 1769597396 7096 67d50bfc4380d9dd37f656557b313744 ""
   "main.tex" 1769361358 2065 85b9cf11f04ea14d9613596dfb29de35 ""
   "nine.tex" 1769356164 313 a36bd5a318cda6b9d927741715c801ae ""
   "numerical_definition.tex" 1769356164 4750 d87439dbe2065def7c6a296fb609a66d ""
-  "one.tex" 1769410089 13860 7a096b19057a0a7296e8c423ca33229f ""
-  "out/main.aux" 1769410241 11300 c28bbd2272274149ab29fde96d688508 "latex"
-  "out/main.out" 1769410241 10404 59498c2231e74a4b3f6ba728e0ec4ffd "latex"
+  "one.tex" 1769597514 13744 d882acc85f670f1b9e349fab73c076fe ""
+  "out/main.aux" 1769597515 13229 9742b7b17424bd447c7eeec5cdb6b0a4 "latex"
+  "out/main.out" 1769597515 10835 6375f9efc0242254ae3d0e4a7f5edc47 "latex"
   "seven.tex" 1769368240 3788 ba99d1f3816629097806f31e560a0c44 ""
-  "six.tex" 1769356164 4992 5fe1f82bf5cf53fcc452ea22f115d3e1 ""
-  "three.tex" 1769410240 14240 1c4dc42e387849397572ebf491fccc3e ""
-  "two.tex" 1769410156 9668 993b6e2b3a1eca6644b7e6906292039b ""
+  "six.tex" 1769597159 16475 702661e093fd05ad41c9c130847cf64f ""
+  "three.tex" 1769582722 14510 7f59591fe277cfdbe485f5920aa5dc88 ""
+  "two.tex" 1769597328 9673 9fc0b2380db8cafb004447e3d8e6a0c7 ""
   (generated)
   "out/main.aux"
   "out/main.dvi"

@@ -65,8 +65,18 @@ y = H\left(\frac{1}{2} - \frac{\Phi}{\pi}\right)
 
 
 \section{座標系の定義}
-
 \subsection{カメラ座標系}
+各座標軸の関係を図\ref{three:one}に示す。
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{c}
+      \includegraphics[width=0.5\linewidth]{figures/3/axis.png}
+  \end{tabular}
+  \caption{世界座標系とカメラ座標系、画像座標系の関係}
+  \label{three:one}
+\end{figure}
+
 カメラ座標系はカメラの焦点位置を原点とし、
 光軸方向を $z$ 軸、
 水平方向右向きを $x$ 軸、
@@ -79,10 +89,10 @@ y = H\left(\frac{1}{2} - \frac{\Phi}{\pi}\right)
 \bm{p}_c = \bm{R}\bm{p}_w + \bm{t}
 \end{equation}
 
-\subsection{スクリーン座標系}
-スクリーン座標系は画像左上を原点とし、水平方向を $u$ 軸、鉛直方向を $v$ 軸と定める。
+\subsection{画像座標系}
+画像座標系は画像左上を原点とし、水平方向を $u$ 軸、鉛直方向を $v$ 軸と定める。
 カメラ座標系上の3次元点 $\bm{p}_c = (x_c, y_c, z_c)^\top$ は、
-カメラ内部パラメータ行列 $\bm{K}$ を用いて、次式によりスクリーン座標系へ射影される。
+カメラ内部パラメータ行列 $\bm{K}$ を用いて、次式により画像座標系へ射影される。
 
 \begin{equation}
 \bm{p}_s = \bm{K}\bm{p}_c

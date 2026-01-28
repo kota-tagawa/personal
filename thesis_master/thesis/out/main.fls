@@ -232,6 +232,10 @@ INPUT c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm
 INPUT ./three.tex
 INPUT ./three.tex
 INPUT three.tex
+INPUT ./figures/3/axis.png
+INPUT ./figures/3/axis.png
+INPUT ./figures/3/axis.png
+INPUT extractbb -B cropbox -O figures/3/axis.png
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/tgoth10.tfm
 INPUT ./four.tex
 INPUT ./four.tex
@@ -242,6 +246,18 @@ INPUT five.tex
 INPUT ./six.tex
 INPUT ./six.tex
 INPUT six.tex
+INPUT ./figures/6/axis2.png
+INPUT ./figures/6/axis2.png
+INPUT ./figures/6/axis2.png
+INPUT extractbb -B cropbox -O figures/6/axis2.png
+INPUT ./figures/6/arkit_camaxis.png
+INPUT ./figures/6/arkit_camaxis.png
+INPUT ./figures/6/arkit_camaxis.png
+INPUT extractbb -B cropbox -O figures/6/arkit_camaxis.png
+INPUT ./figures/6/flow.png
+INPUT ./figures/6/flow.png
+INPUT ./figures/6/flow.png
+INPUT extractbb -B cropbox -O figures/6/flow.png
 INPUT ./seven.tex
 INPUT ./seven.tex
 INPUT seven.tex
@@ -255,6 +271,7 @@ INPUT ./bibliography.tex
 INPUT ./bibliography.tex
 INPUT bibliography.tex
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmti10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT out/main.aux
 INPUT out/main.out
 INPUT out/main.out
