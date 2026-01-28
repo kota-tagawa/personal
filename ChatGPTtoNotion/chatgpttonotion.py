@@ -63,20 +63,6 @@ def add_row_to_notion_database(section_dict):
                         "name": section_dict.get("Frequency of use", "")
                     }
                 },
-                "Reference": {
-                    "rich_text": [{
-                        'annotations': {'bold': True,
-                                            'code': False,
-                                            'color': 'default',
-                                            'italic': False,
-                                            'strikethrough': False,
-                                            'underline': False},
-                        "type": "text",
-                        "text": {
-                            "content": section_dict.get("Reference", "")
-                        }
-                    }],
-                },
                 "Pronunciation": {
                     "url": section_dict.get("Pronunciation", "")
                 }
@@ -90,7 +76,7 @@ def add_row_to_notion_database(section_dict):
                     "rich_text": [{
                         "type": "text",
                         "text": {
-                            "content": section_dict.get("Sentence", "")
+                            "content": section_dict.get("Sentence in English", "")
                         }
                     }],
                 'icon': {'emoji': '🗣', 'type': 'emoji'},
@@ -158,6 +144,36 @@ def add_row_to_notion_database(section_dict):
             },{
                 # toc block
                 "object": "block",
+                "type": "toggle",
+                "toggle": {
+                    'color': 'gray_background',
+                    "rich_text": [{
+                        'annotations': {'bold': True,
+                                            'code': False,
+                                            'color': 'blue',
+                                            'italic': False,
+                                            'strikethrough': False,
+                                            'underline': False},
+                        "type": "text",
+                        "text": {
+                            "content": "日本語訳"
+                        }
+                    }],
+                    "children":[{
+                        "type" : "paragraph",
+                        "paragraph": {
+                            "rich_text": [{
+                                "type": "text",
+                                "text": {
+                                    "content": section_dict.get("Sentence in Japanese", "Meaning in Japanese section not found.")
+                                 }
+                            }]
+                        }
+                    }]
+                }
+            },{
+                # toc block
+                "object": "block",
                 "type": "callout",
                 "callout": {
                     'color': 'yellow_background',
@@ -170,7 +186,7 @@ def add_row_to_notion_database(section_dict):
                                             'underline': False},
                         "type": "text",
                         "text": {
-                            "content": "画像"
+                            "content": "イメージ"
                         }
                     }],
                     "children":[{
@@ -179,11 +195,8 @@ def add_row_to_notion_database(section_dict):
                             "rich_text": [{
                                 "type": "text",
                                 "text": {
-                                    "content": "Google Image Search",
-                                    "link": {
-                                        "url": section_dict.get("Image", "Image section not found.")
-                                    }
-                                }
+                                    "content": section_dict.get("Image", "Image section not found.")
+                                 }
                             }]
                         }
                     }],
@@ -266,7 +279,7 @@ def add_row_to_notion_database(section_dict):
                                             'underline': False},
                         "type": "text",
                         "text": {
-                            "content": "自由記述"
+                            "content": "シノニム"
                         }
                     }],
                     "children":[{
@@ -275,74 +288,12 @@ def add_row_to_notion_database(section_dict):
                             "rich_text": [{
                                 "type": "text",
                                 "text": {
-                                    "content": section_dict.get("Other important points", "Other important points section not found.")
+                                    "content": section_dict.get("Synonym", "Synonym section not found.")
                                  }
                             }]
                         }
                     }],
                 'icon': {'emoji': '✏️', 'type': 'emoji'},
-                }
-            },{
-                # toc block
-                "object": "block",
-                "type": "callout",
-                "callout": {
-                    'color': 'blue_background',
-                    "rich_text": [{
-                        'annotations': {'bold': True,
-                                            'code': False,
-                                            'color': 'blue',
-                                            'italic': False,
-                                            'strikethrough': False,
-                                            'underline': False},
-                        "type": "text",
-                        "text": {
-                            "content": "例文(English)"
-                        }
-                    }],
-                    "children":[{
-                        "type" : "paragraph",
-                        "paragraph": {
-                            "rich_text": [{
-                                "type": "text",
-                                "text": {
-                                    "content": section_dict.get("Example sentence in English", "Example sentences section not found.")
-                                 }
-                            }]
-                        }
-                    }],
-                'icon': {'emoji': '📎', 'type': 'emoji'}
-                }
-            },{
-                # toc block
-                "object": "block",
-                "type": "callout",
-                "callout": {
-                    'color': 'blue_background',
-                    "rich_text": [{
-                        'annotations': {'bold': True,
-                                            'code': False,
-                                            'color': 'blue',
-                                            'italic': False,
-                                            'strikethrough': False,
-                                            'underline': False},
-                        "type": "text",
-                        "text": {
-                            "content": "例文(日本語)"
-                        }
-                    }],
-                    "children":[{
-                        "type" : "paragraph",
-                        "paragraph": {
-                            "rich_text": [{
-                                "type": "text",
-                                "text": {
-                                    "content": section_dict.get("Example sentence in Japanese", "Example sentences section not found.")
-                                 }
-                            }]
-                        }
-                    }],
-                'icon': {'emoji': '📎', 'type': 'emoji'}
                 }
             },]
         }
@@ -368,37 +319,10 @@ def submit():
 
     return jsonify({"message": "Data added to Notion", "response": response})
 
-# HTMLフォームのページをレンダリングするエンドポイント
+# HTMLページをレンダリングフォームのページをレンダリングするエンドポイント
 @app.route('/')
 def form():
     return render_template('form.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# try:
-#     while True:
-#         # ユーザーにテキストの入力を求める
-#         print("Please enter the text (type 'END' on a new line to finish):")
-#         user_text = []
-#         while True:
-#             line = input()
-#             if line == "END":
-#                 break
-#             user_text.append(line)
-#         user_text = "\n".join(user_text)
-
-#         print("User input text:")
-#         print(user_text)
-
-#         # 入力されたテキストを処理
-#         section_dict = extract_sections_from_text(user_text)
-
-#         print("Extracted sections:")
-#         print(section_dict)
-
-#         # テキストを新規ページとして追加
-#         add_row_to_notion_database(database_id, section_dict)
-#         print("辞書登録スクリプト...中止したい場合はCTRL+C\n")
-# except KeyboardInterrupt:
-#     print("辞書登録スクリプトを終了しました")
