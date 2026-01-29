@@ -1,0 +1,14 @@
+\begin{thebibliography}{1}
+
+\bibitem{arsession}
+A.~Inc, ``Managing session life cycle and tracking quality.'' \url{https://developer.apple.com/jp/documentation/arkit/managing_session_lifecycle_and_tracking_quality/}, 2026.
+\newblock Accessed: 2026-01-16.
+
+\bibitem{ardepth}
+A.~Documentation, ``More to explore with arkit 6, "depth api".'' \url{https://developer.apple.com/augmented-reality/arkit/}, 2026.
+\newblock Accessed: 2026-01-16.
+
+\bibitem{visualslam}
+T.~Taketomi, H.~Uchiyama, and S.~Ikeda, ``Visual slam algorithms: a survey from 2010 to 2016,'' {\em IPSJ Transactions on Computer Vision and Applications}, pp.~1--15, 2017.
+
+\end{thebibliography}

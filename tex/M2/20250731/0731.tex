@@ -1,0 +1,256 @@
+\documentclass[]{jarticle}          % 一段組
+%\documentclass[twocolumn]{jarticle} % 二段組
+
+\textwidth 180mm
+\textheight 255mm
+\oddsidemargin -12mm
+\topmargin -15mm
+\columnsep 10mm
+
+%\vspace{0.5cm} % 一段組の場合はコメントアウトした方が体裁がよいx
+%] % 一段組の場合はコメントアウトする
+
+\usepackage{styles/labheadings}
+\usepackage[dvipdfmx]{graphicx,color}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+% 追加
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{float}
+\captionsetup{compatibility=false}
+
+\input{numerical_definition.tex}
+% report.texと同じディレクトリにnumerical_definition.texを入れておけば上の書き方でもいいはずです
+
+\usepackage[
+  dvipdfm,
+  bookmarks=true,
+  bookmarksnumbered=true,
+  colorlinks=true]{hyperref}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+\pagestyle{labheadings}
+\headerleft{全方位画像を用いたシーンの3次元モデルの作成とその活用}   % ヘッダの左側のタイトル
+\headerright{2025年7月31日}  % ヘッダの右側のタイトル
+
+\begin{document}
+
+%\twocolumn % 一段組の場合はコメントアウトする
+
+\vspace*{2ex}
+\begin{center}
+ {\Large \bf 特徴点マッチングの改良と実験の準備}\\ % タイトル
+ \vspace*{5mm}
+ {\large M2 田川幸汰}% 発表者名
+\end{center}
+
+%\vspace{0.5cm} % 一段組の場合はコメントアウトした方が体裁がよいx
+%] % 一段組の場合はコメントアウトする
+
+%新しく作成したコマンド
+% \newcommand{\reffig}[1]{\hyperref[#1]{図\ref{#1}}}
+% \newcommand{\refeq}[1]{\hyperref[#1]{式(\ref{#1})}}
+% \newcommand{\reftab}[1]{\hyperref[#1]{表\ref{#1}}}
+% \newcommand{\refsec}[1]{\hyperref[#1]{\ref{#1}章}}
+% \newcommand{\refsubsec}[1]{\hyperref[#1]{\ref{#1}節}}
+
+% 数式
+%\begin{equation}
+%  数式記述  
+%  \label{ラベル名}
+%\end{equation}
+
+% 図
+% \begin{figure}[!ht]
+%   \begin{center}
+%     \includegraphics[scale=0.5]{figures/画像ファイル名}
+%     \caption{キャプション名}
+%     \label{ラベル名}
+%   \end{center}
+% \end{figure}
+
+% リスト
+% \begin{enumerate or itemize}
+%   \item 
+% \end{enumerate or itemize}
+
+\section{前回までの結果と概要}
+以下に前回までの特徴点マッチングの結果（図\ref{one}）と実行時間（表\ref{table_one}）、
+自己位置推定結果（図\ref{two}）を示す。
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.45\textwidth]{figures/ML/input_-90.png}&
+      \includegraphics[width=0.45\textwidth]{figures/ML/input_-120.png}\\
+      \includegraphics[width=0.45\textwidth]{figures/ML/input_-150.png}&
+      \includegraphics[width=0.45\textwidth]{figures/ML/c507_60.png}\\
+      \includegraphics[width=0.45\textwidth]{figures/ML/c507_90.png}&
+      \includegraphics[width=0.45\textwidth]{figures/ML/c507_120.png}
+    \end{tabular}
+  \end{center}
+  \caption{SuperPoint, SuperGlueによる特徴点マッチング結果}
+  \label{one}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{実行時間}
+  \label{table_one}
+  \begin{tabular}{c|l|l|l|l}
+    & 特徴点の事前検出(秒) & 特徴点検出(秒) & 特徴点マッチング(秒) & 自己位置推定(秒) \\
+    SuperPoint,SuperGlue & 389.025 & 0.134 & 5.516 & 0.141 \\
+  \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{figures/result.png}
+    \caption{自己位置推定結果}
+    \label{two}
+  \end{center}
+\end{figure}
+
+機械学習ベースの特徴点マッチング手法であるSuperPoint~\cite{detone2018superpoint}およびSuperGlue~\cite{sarlin2020superglue}に対して、
+現在位置に基づく特徴点マッチングなどの修正を行うことで、マッチング精度および実行時間を改善した。
+さらに、自己位置推定の結果として一部のカメラ位置が壁の裏側に推定される問題が発生していたが、
+これについても幾何的な制約を導入することで、カメラ位置が正しく壁の表側に推定されるように改善した。
+
+\section{現在位置に基づく特徴点マッチング}
+表\ref{table_one}より、処理全体における実行時間のボトルネックは特徴点マッチング処理であることが明らかとなった。
+従来は、入力された画像に対して毎回すべてのテクスチャ画像と特徴点マッチングを実施していて、処理時間が大幅に増加していた。
+この問題を解消するために、以下の2点の改善を行った。
+
+\begin{enumerate}
+  \item \textbf{初回のみ全テクスチャとのマッチングを実施} \\
+  最初の1枚の入力画像に対しては、従来通り全テクスチャ画像と特徴点マッチングを実施する。
+  
+  \item \textbf{2回目以降は近傍テクスチャに限定} \\
+  2回目以降の入力画像については、1つ前の画像から得られた自己位置推定結果（現在位置）を用いて、
+  位置的に近いテクスチャ画像を5件選定し、それらとのみ特徴点マッチングを実施する。
+\end{enumerate}
+
+また、この処理変更に伴い、各テクスチャ画像に対応する重心位置をあらかじめファイルに記述・保存する仕組みを追加した。
+
+\subsection{特徴点マッチングの修正}
+精度と実行時間の改良のための主な修正項目を以下に示す。
+
+\begin{enumerate}
+  \item \textbf{特徴点検出およびマッチングのパラメータ調整} \\
+  SuperPointにおける最大検出数（\texttt{max\_keypoints}）を1500から500に削減し、処理時間を短縮した。
+  加えて、SuperGlueにおけるSinkhorn反復回数（\texttt{sinkhorn\_iterations}）を10から15に増やし、マッチング精度を向上させた。
+  また、マッチングのしきい値（\texttt{match\_threshold}）を0.4から0.3に変更することで、より信頼性の高いマッチのみを採用するようにした。
+
+  \item \textbf{距離スコアに基づくマッチ候補の絞り込み} \\
+  SuperGlueによって得られたマッチのうち、スコアが高い上位100件のみを選択し、RANSACによる外れ値除去処理に入力するよう変更した。
+  これにより、RANSAC処理における計算量を削減した。
+
+  \item \textbf{特徴点検出およびマッチングの際の解像度変更} \\
+  入力画像およびデータベース画像の解像度を柔軟に変更できるようにした。
+  SuperPointおよびSuperGlueは、低解像度でも十分に特徴点検出およびマッチングを行うことが可能である。
+
+  \item \textbf{不要処理の削減と前処理の導入} \\
+  マッチング結果の画像描画処理は、最良マッチが更新された場合に限って実施するよう変更した。
+  また、特徴点の正規化を事前に行うことで、マッチングモデルへの入力サイズを削減した。
+\end{enumerate}
+
+
+\section{幾何的な制約による自己位置推定結果の修正}
+一部の入力画像において、カメラ位置が壁の裏側に推定される問題が発生していた。
+この原因を調査するため、12個の初期値から求めた自己位置推定結果のうち、目的関数のスコアが高い上位3件の解を分析した（図\ref{three}）。
+その結果、上位2件はいずれもスコアが同一であり、カメラ位置は壁の裏側に投影され、
+さらにカメラ姿勢が天地反転していることが確認された。
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{figures/1.png}
+    \caption{カメラ位置}
+    \label{three}
+  \end{center}
+\end{figure}
+
+カメラ位置が壁の裏側に誤って推定される問題に対処するため、カメラ座標系の$Y$軸が常に下向きであるという幾何学的制約を導入した。
+具体的には、カメラ姿勢行列$R$の要素$R[1,2]$が負（$R[1,2] < 0$）であることを条件とし、
+これはカメラの$Y$軸が世界座標系の$Z$軸負方向と一致していることを意味する。
+この判定処理を加えることで、壁の裏側と判定された解を候補から除外することが可能となった。
+
+
+\subsection{特徴点検出およびマッチング結果}
+特徴点検出およびマッチングはSuperPoint、SuperGlueの公式実装(\cite{superglue_github})を参考にした。
+実行環境と、SuperPoint及びSuperGlueのパラメータを表\ref{table_two}に示す。
+また、入力画像とデータベース画像の解像度は前回の0.5倍としている。
+\begin{table}[htbp]
+  \centering
+  \caption{実行環境及びハイパーパラメータ}
+  \label{table_two}
+  \begin{tabular}{c|l}
+    GPU & NVIDIA GeForce RTX 4060 Ti, NVIDIA driver version=560.94, CUDA version=12.6 \\
+    SuperPoint & nms\_radius=4, keypoint\_threshold=0.005, max\_keypoints=500 \\
+    SuperGlue & weights='outdoor', sinkhorn\_iterations=15, match\_threshold=0.3 \\
+  \end{tabular}
+\end{table}
+
+実行結果を図\ref{five}に示す。
+前回までの結果（図\ref{one}）と比較して、右中央の画像が正しく推定されていることが確認できる。
+これは、距離スコアによるマッチング候補の絞り込みにより、スコアの低いマッチを除外できたことが要因と考えられる。
+また、その他の画像についても解像度を変更してもなお精度の高いマッチングが実現されている。
+\begin{figure}[H]
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.45\textwidth]{figures/ML2/input_-90.png}&
+      \includegraphics[width=0.45\textwidth]{figures/ML2/input_-120.png}\\
+      \includegraphics[width=0.45\textwidth]{figures/ML2/input_-150.png}&
+      \includegraphics[width=0.45\textwidth]{figures/ML2/c507_60.png}\\
+      \includegraphics[width=0.45\textwidth]{figures/ML2/c507_90.png}&
+      \includegraphics[width=0.45\textwidth]{figures/ML2/c507_120.png}
+    \end{tabular}
+  \end{center}
+  \caption{SuperPoint, SuperGlueによるマッチング結果}
+  \label{five}
+\end{figure}
+
+また、特徴点マッチングの結果を用いた自己位置推定の結果を図\ref{six}に示す。
+前回までの結果（図\ref{two}）と比較して、壁の裏側の推定結果を除外し、正しい姿勢が描画されていることが確認できる。
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{figures/result2.png}
+    \caption{自己位置推定結果の改良版}
+    \label{six}
+  \end{center}
+\end{figure}
+
+実行時間を表\ref{table_three}に示す。前回までの結果（表\ref{table_one}）と比較して、特徴点の検出およびマッチングに要する時間を大幅に短縮できた。
+自己位置推定に関しては、現状では12個の初期値に対して逐次的に推定を行っているため、
+初期値の数を削減するか、あるいは初期値を用いない手法に置き換えることで、さらなる処理時間の短縮が期待される。
+
+\begin{table}[htbp]
+  \centering
+  \caption{実行時間}
+  \label{table_three}
+  \begin{tabular}{c|l|l|l}
+    SuperPoint,SuperGlue & 特徴点の事前検出(秒) & 特徴点検出(秒) & 特徴点マッチング初回(秒) \\
+    & 12.716 & 0.061 & 1.459 \\
+    & 特徴点マッチング2回目(秒) & 自己位置推定(秒) \\
+    & 0.128 & 0.332 \\
+  \end{tabular}
+\end{table}
+
+
+\section{今後の計画}
+今後の研究計画を以下に示す。
+\begin{enumerate}
+  \item \textbf{8月5日(19時から20時)}：テクスチャの再撮影
+  \item 8月前半：テクスチャ補完した3次元モデルを生成、自己位置推定結果確認
+  \item 8月後半：自己位置推定機能を応用した実用的なアプリケーションのデモ開発
+  \begin{itemize}
+    \item 目的地までのルートを提示するリアルタイムナビゲーションシステムを構築（動画入力）
+  \end{itemize}
+  \item 9月以降：線特徴の活用方法を検討
+\end{enumerate}
+
+\bibliographystyle{ieeetr}  % または plain, unsrt, apalike などスタイルに応じて選択
+\bibliography{reference}   % reference.bib というファイル名を使っている場合
+
+\end{document}

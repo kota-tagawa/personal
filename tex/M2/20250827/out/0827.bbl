@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{detone2018superpoint}
+D.~DeTone, T.~Malisiewicz, and A.~Rabinovich, ``Superpoint: Self-supervised interest point detection and description,'' {\em arXiv preprint arXiv:1712.07629}, 2018.
+
+\bibitem{sarlin2020superglue}
+P.-E. Sarlin, D.~DeTone, T.~Malisiewicz, and A.~Geiger, ``Superglue: Learning feature matching with graph neural networks,'' in {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pp.~4938--4947, 2020.
+
+\bibitem{wikimedia_commons}
+{Wikimedia Commons contributors}, ``{Wikimedia Commons, the free media repository}.'' \url{https://commons.wikimedia.org/}.
+\newblock Accessed: 2025-08-27.
+
+\end{thebibliography}

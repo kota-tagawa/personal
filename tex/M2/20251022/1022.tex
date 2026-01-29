@@ -1,0 +1,278 @@
+\documentclass[]{jarticle}          % 一段組
+%\documentclass[twocolumn]{jarticle} % 二段組
+
+\textwidth 180mm
+\textheight 255mm
+\oddsidemargin -12mm
+\topmargin -15mm
+\columnsep 10mm
+
+%\vspace{0.5cm} % 一段組の場合はコメントアウトした方が体裁がよいx
+%] % 一段組の場合はコメントアウトする
+
+\usepackage{styles/labheadings}
+\usepackage[dvipdfmx]{graphicx,color}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+% 追加
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{float}
+\captionsetup{compatibility=false}
+
+\input{numerical_definition.tex}
+% report.texと同じディレクトリにnumerical_definition.texを入れておけば上の書き方でもいいはずです
+
+\usepackage[
+  dvipdfm,
+  bookmarks=true,
+  bookmarksnumbered=true,
+  colorlinks=true]{hyperref}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+\pagestyle{labheadings}
+\headerleft{全方位画像を用いたシーンの3次元モデルの作成とその活用}   % ヘッダの左側のタイトル
+\headerright{2025年10月22日}  % ヘッダの右側のタイトル
+
+\begin{document}
+
+%\twocolumn % 一段組の場合はコメントアウトする
+
+\vspace*{2ex}
+\begin{center}
+ {\Large \bf テクスチャ補完した3次元モデルの生成と自己位置推定}\\ % タイトル
+ \vspace*{5mm}
+ {\large M2 田川幸汰}% 発表者名
+\end{center}
+
+%\vspace{0.5cm} % 一段組の場合はコメントアウトした方が体裁がよいx
+%] % 一段組の場合はコメントアウトする
+
+%新しく作成したコマンド
+% \newcommand{\reffig}[1]{\hyperref[#1]{図\ref{#1}}}
+% \newcommand{\refeq}[1]{\hyperref[#1]{式(\ref{#1})}}
+% \newcommand{\reftab}[1]{\hyperref[#1]{表\ref{#1}}}
+% \newcommand{\refsec}[1]{\hyperref[#1]{\ref{#1}章}}
+% \newcommand{\refsubsec}[1]{\hyperref[#1]{\ref{#1}節}}
+
+% 数式
+%\begin{equation}
+%  数式記述  
+%  \label{ラベル名}
+%\end{equation}
+
+% 図
+% \begin{figure}[!ht]
+%   \begin{center}
+%     \includegraphics[scale=0.5]{figures/画像ファイル名}
+%     \caption{キャプション名}
+%     \label{ラベル名}
+%   \end{center}
+% \end{figure}
+
+% リスト
+% \begin{enumerate or itemize}
+%   \item 
+% \end{enumerate or itemize}
+
+\section{前回までの結果}
+テクスチャの特徴不足により特徴点マッチングおよび自己位置推定が困難となっていたため、
+特徴の乏しい面にポスターを貼付することでテクスチャ情報を補強した。
+この手法により、より豊富なテクスチャ情報を有する3次元モデルを生成し、
+その3次元モデルを用いて特徴点マッチングを実施した。
+マッチング結果を図\ref{one}に示す。
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.4\textwidth]{figures/ML/frame_00002.jpg}&
+      \includegraphics[width=0.4\textwidth]{figures/SIFT/frame_00002.jpg}\\
+      \includegraphics[width=0.4\textwidth]{figures/ML/frame_00041.jpg}&
+      \includegraphics[width=0.4\textwidth]{figures/SIFT/frame_00041.jpg}\\
+    \end{tabular}
+  \end{center}
+  \caption{入力フレームに対する特徴点マッチング結果。左列は機械学習ベース手法、右列は従来手法}
+  \label{one}
+\end{figure}
+
+特徴点マッチングにSuperPointを用いた手法（左）では、
+テクスチャ補完のために貼付したポスターが写り込んでいるフレームにおいて、ほぼ全てのケースで正しくマッチングを行うことができた。
+一方、SIFTを用いた手法（右）では、カメラ近傍にポスターが写り込んでいる場合にのみマッチングが成立し、
+それ以外のフレームではマッチ数の不足や誤対応が生じる結果となった。
+さらに、一定時間以上連続して自己位置推定に失敗した際には、全データベース画像との再マッチングを行う仕様としたため、
+処理全体の計算時間に大きな差が生じる要因となった。
+
+また、入出力を動画に対応させ、自己位置推定結果を活用する手法として2種類の出力を作成した。
+1つは、自己位置推定結果をフロアマップ上に表示するものであり(\href{https://drive.google.com/file/d/11ouiGpY2B3j3JziUIqTNaBzeEzSpID_H/view?usp=drive_link}{result\_map.mp4})
+もう1つは、入力画像上に直進・右左折などの2Dアイコンを重畳表示するものである(\href{https://drive.google.com/file/d/1B3BXWz6qM_uwAet1F8PUvZw_Rav7S5sv/view?usp=drive_link}{result\_2D.mp4})。
+
+
+\section{概要}
+前回の報告までに、特徴の乏しい面にポスターを貼付することでテクスチャ情報を補強した3次元モデルを生成したが、
+今回はその対象範囲をC棟5階全体へと拡張した。
+それに伴い、一部特徴点の再計測や全方位カメラの再撮影、ならびにカメラ位置推定のための2D-3D対応付けを実施した。
+
+また、前回の報告では、自己位置推定結果を活用する手法として、入力画像上に直進・右左折などの2Dアイコンを重畳表示する、
+道案内システムのプロトタイプを構築した。
+今回は、アイコンや目的地などの要素をCGとして描画し、AR道案内システムとしての基本的な処理の流れを完成させた。
+
+\section{テクスチャ補完範囲の拡張}
+テクスチャの補完範囲をC棟5階全体に拡張した。
+3次元モデルを生成するまでの手順を以下に示す。
+
+\begin{enumerate}
+\item \textbf{特徴点の世界座標を計測}\\
+C棟5階南棟を原点として特徴点を計測する。計測にはレーザー距離計付き巻尺 GM5（GOODMAN）を用いた。
+併せて、全方位カメラの撮影位置も計測する。撮影はおおむね4m間隔で行った。
+
+\item \textbf{テクスチャ補完に用いるポスターを貼付}\\
+歪みのない撮影を行うため、全方位カメラの正面にポスターを貼付する。
+ポスターはA2サイズであり、画像はWikimedia Commons~\cite{wikimedia_commons}より取得した。
+
+\item \textbf{全方位カメラによる撮影}\\
+カメラ位置（赤）およびポスター位置（青）を図\ref{two}に示す。
+ポスター枚数の都合上、進行方向右側にのみテクスチャを補完した。
+また、カメラの高さは$1.4\mathrm{m}$である。
+
+\item \textbf{3次元モデルファイル（mqoファイル）の生成}\\
+3次元モデルの頂点の世界座標、面の4隅の頂点番号およびUV座標を入力する。
+UV座標はテクスチャ割り当て時に修正するため、ここではテクスチャ4隅の頂点の世界座標から縦横比を求めて入力する。
+この一連の処理は、頂点の世界座標を入力することでプログラム内で自動的に実行される。
+
+\item \textbf{テクスチャの割り当て}\\
+各全方位カメラから複数視点の透視投影画像を生成し、それぞれの画像に対して2D-3D対応付けを行う。
+得られた対応付けをもとにカメラ位置・姿勢の推定を行い、テクスチャ画像および切り出す四隅のUV座標を求める。
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{figures/projected_points.png}
+    \label{two}
+  \end{center}
+\end{figure}
+
+これら一連の処理により生成された3次元モデルの一部を図\ref{three}に示す。
+若干のずれは見られるものの、概ね問題なくテクスチャが割り当てられていることが確認できる。
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{figures/3dmodel.png}
+    \label{three}
+  \end{center}
+\end{figure}
+
+
+\section{AR道案内システム}
+テクスチャを補完した3次元モデルを用いて自己位置推定を行い、その結果を活用した道案内システムを構築した。
+自己位置推定には岡本の手法(GOPPnPL)を利用しており、現状では点特徴のみを対応付けに用いている。
+ただし、同一平面上から3次元特徴を取得しているため、上下や左右が反転した自己位置推定結果が得られる場合がある。
+そこで、回転行列の符号（$R[1,2] < 0$）を参照し、カメラY軸が世界Z軸の負方向を示す、正しい天地方向の結果のみを採用している。
+
+自己位置推定結果をもとに、現在位置から目的地までの道案内を行うシステムの一連の流れを以下に示す。
+
+\begin{enumerate}
+\item \textbf{目的地（ルート）を設定}\\
+フロアマップ上からルートを設定する。
+ルート検索機能は現時点では実装していないため、右左折のポイントも順番に指定する。
+
+\item \textbf{ウィンドウを作成}\\
+入力画像の縦横の長さ、画像の焦点距離を元に、入力画像を背景とするウィンドウを作成する。
+今回、CG処理にはOpenGLライブラリを用いている。また、ウィンドウやイベント管理はGLFWを用いている。
+
+\item \textbf{3次元モデル読み込み}\\
+直進や右左折を示す矢印、目的地に描画する3次元モデルを読み込む（図\ref{four}参照）。
+また、到着時やルート逸脱時に表示する文字テクスチャも生成する。
+
+\item \textbf{カメラおよびモデル位置姿勢の計算}\\
+自己位置推定結果に基づき、カメラおよび各モデルの位置・姿勢を計算する。
+各矢印は視点から$1.0\mathrm{m}$奥、高さ$0.5\mathrm{m}$の位置に描画される。
+直進矢印は次の目的地（右左折ポイント）方向を向くよう回転させ、
+目的地モデルは現在位置を向くように回転させる。
+
+\item \textbf{3次元モデルを描画}\\
+現在位置とルート情報に基づき描画対象の3次元モデルを決定する。
+右左折ポイントから$2.0\mathrm{m}$以内であれば右左折矢印を描画し、
+目的地から$3.0\mathrm{m}$以内であれば画面下部に「目的地周辺です」とメッセージを表示する。
+それ以外の場合は直進矢印を描画する。
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.45\textwidth]{figures/arrow.png}&
+      \includegraphics[width=0.45\textwidth]{figures/left.png}\\
+    \end{tabular}
+  \end{center}
+  \caption{矢印の3次元モデル}
+  \label{four}
+\end{figure}
+
+\subsection{実行結果}
+実行結果を図\ref{five}に示す。
+また、動画出力は
+(\href{https://drive.google.com/file/d/1Io3C1GJd1b2DsSkq6JkUKodhJSnhtI7W/view?usp=drive_link}{result.mp4})に示す。
+右図は特徴点マッチングの結果、左図は当該フレームに対応するCG描画の結果である。
+特徴点マッチングが正しく行われた画像においては、CG描画も正しく反映されていることが確認できる。
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.4\textwidth]{figures/matching/10.jpg}&
+      \includegraphics[width=0.4\textwidth]{figures/CG/10.png}\\
+      \includegraphics[width=0.4\textwidth]{figures/matching/71.jpg}&
+      \includegraphics[width=0.4\textwidth]{figures/CG/71.png}\\
+      \includegraphics[width=0.4\textwidth]{figures/matching/200.jpg}&
+      \includegraphics[width=0.4\textwidth]{figures/CG/200.png}\\
+    \end{tabular}
+  \end{center}
+  \caption{実行結果}
+  \label{five}
+\end{figure}
+
+また、特徴点マッチングに失敗したフレームとそのCG描画結果を図\ref{six}に示す。
+局所的に類似する特徴を持つ別の画像と誤ってマッチングしたため、CG描画も正しく行われていない。
+このような誤マッチングを極力抑制し、
+仮に誤マッチングが発生した場合でも自己位置推定が誤っていると判断して位置を更新しない仕組みを導入することが望ましい。
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.45\textwidth]{figures/matching/125.jpg}&
+      \includegraphics[width=0.45\textwidth]{figures/CG/125.png}\\
+    \end{tabular}
+  \end{center}
+  \caption{実行結果失敗例}
+  \label{six}
+\end{figure}
+
+実行時間については、現在位置がある程度把握されている場合、
+特徴点検出に平均0.015秒、特徴点マッチングに平均0.2秒、自己位置推定に0.01秒、CG描画に0.05秒を要した。
+したがって、1フレームあたりの処理時間は合計で約0.3秒となり、道案内システムとして利用する上で十分な実行性能であると言える。
+
+ただし、現在位置が不明な場合は、データベース内の全画像とマッチングを行う必要があるため、
+特徴点マッチングには約2秒を要する。このため、自己位置推定が不能な間も他の情報を用いて適宜自己位置を更新できれば、
+より安定した自己位置推定に基づく道案内システムを構築することが可能である。
+
+\section{今後の計画}
+今後の研究計画を以下に示す。
+\begin{enumerate}
+\item 11月以降：より安定した自己位置推定結果の取得と、AR道案内システムの改良 \\
+利用者端末のセンサ情報の活用：現状では、利用者端末のセンサ情報（加速度など）を用いて、前回の自己位置推定結果からの変位を算出する方法が最も実現しやすいと考えられる。
+このセンサ情報を基に、特徴点マッチングや自己位置推定の結果が正しいかどうかを検証したり、
+テクスチャ情報が乏しくマッチングできない場合の自己位置推定結果の補完として利用することで、
+自己位置推定の安定化につなげられると考えている。想定しているシステムの概要を図\ref{seven}に示す。
+現時点では、iPadを用いたカメラ画像の読み込み処理、センサ情報の取得処理、およびCG描画の基本的な実装を行っている
+(\href{https://drive.google.com/file/d/1PZ5wgjOq3yaQbyGKmE1KrIJzU6n0kfBb/view?usp=drive_link}{iPad.mp4})。
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{figures/system.png}
+    \label{seven}
+  \end{center}
+\end{figure}
+
+\bibliographystyle{ieeetr}  % または plain, unsrt, apalike などスタイルに応じて選択
+\bibliography{reference}   % reference.bib というファイル名を使っている場合
+
+\end{document}

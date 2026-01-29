@@ -1,19 +1,283 @@
 \chapter{実験}
-本節では、簡易モデルを用いた自己位置推定実験に用いた機材、パラメータ、入力データ、および実験結果について説
-明する。
 
 \section{実験準備}
-実験のために計測した点や撮影したカメラ位置、実行端末などについて示す。
+表\ref{seven:one}に実験で使用した機材および実行環境示す。
+\begin{table}[H]
+  \centering
+  \caption{実験で使用した機材および実行環境}
+  \label{seven:one}
+  \begin{tabular}{l|l}
+    \hline
+    項目 & 内容 \\
+    \hline \hline
+    全方位カメラ & RECOH THETA 360 \\
+    全方位カメラ解像度 & 11K $(11008 \times 5504)$ \\
+    全方位カメラ焦点距離 & 約1752 \\
+    \hline
+    OS & Windows 11 \\
+    CPU & Intel Core i7-14700 \\
+    GPU & NVIDIA GeForce RTX 4060 Ti \\
+    メモリ & 32 GB \\
+    使用言語 & Python 3.9.13 \\
+    主な使用ライブラリ & PyTorch 2.5.1+cu121 ,OpenCV 4.10 \\
+    \hline
+    屋内ナビゲーション端末 & iPad Pro 12.9インチ (第5世代) \\
+    OS (iOS) & 17.5 \\
+    端末カメラ解像度 & ($1920 \times 1440$) \\
+    端末カメラ焦点距離 & 約1595 \\
+    \hline
+    屋内ナビゲーション実装環境 & MacBook Air 13インチ \\
+    使用言語 & swift 5.10 \\
+    主な使用ライブラリ & ARKit, SceanKit \\
+    \hline
+  \end{tabular}
+\end{table}
 
-\section{全方位カメラパラメータ推定結果}
-外部パラメータの推定結果を実測値と比較したところ、カメラ位置の誤差はおおむね 10cm 以下であることを確認した。
+また、簡易モデルの作成および屋内ナビゲーションに関する実験は、所属する大学の C 棟 5 階において実施した。
+当該フロアは廊下および複数の部屋から構成されており、単色壁面が連続するテクスチャの少ない領域が存在する。
+C棟5階のフロアマップおよび、全方位画像の撮影位置を図\ref{seven:two}に示す。
+全方位画像は、一部の例外を除き、およそ 4\,m 間隔で合計 $N$ 箇所において撮影した。
+撮影時のカメラ高さは床面から 1.4\,m である。
 
-\section{簡易モデル生成結果}
-壁面や扉付近など特徴量が乏しい領域には、ポスターを貼付して特徴量を追加したモデルを作成し、その効果を検証した。
+ただし、当該環境には類似した外観を有する領域が多く、特徴点マッチングに必要な情報が十分に得られない箇所が存在する。
+そこで本研究では、過度に環境のテクスチャ量を増加させることなく、最低限の特徴情報を得ることを目的として、
+壁面の一部に A2 サイズのポスターを掲示した。
+ポスターの掲示間隔はおよそ 4\,m に 1 枚程度とし、環境全体が高テクスチャ化することを避けるよう配慮した。
 
-\section{特徴点マッチング手法の比較評価}
-学習ベースの手法は、一般的な手法と比較して特徴が乏しい画像でも比較的安定してマッチングできた。
-一方、入力画像が複数のテクスチャ画像と類似した特徴を含む場合、どちらの手法でも正しいマッチングが困難であった。
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{c}
+      \includegraphics[width=0.4\textwidth]{figures/7/camera.png}
+  \end{tabular}
+  \caption{世界座標系とカメラ座標系、画像座標系の関係}
+  \label{seven:two}
+\end{figure}
+
+各全方位カメラについては、2方向以上の透視投影画像を画角$90 \times 90$で生成し、
+透視投影画像上の2次元座標と世界座標の3次元座標とを対応付けることで、全方位カメラの位置と姿勢を推定した（図\ref{seven:three}）。
+すべての全方位カメラにおいて、推定位置と実測位置のずれが$10cm$未満であることを確認している。
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{ccc}
+    \includegraphics[width=0.4\textwidth]{figures/7/omni.png} &
+    \includegraphics[width=0.3\textwidth]{figures/7/pers1.png} &
+    \includegraphics[width=0.3\textwidth]{figures/7/pers2.png}
+  \end{tabular}
+  \caption{全方位画像(10番)と前後の透視投影画像}
+  \label{seven:three}
+\end{figure}
+
+\section{簡易モデル生成}
+\subsection{データセットおよびパラメータ設定}
+図\ref{seven:four}に、ワイヤーフレーム生成の入力として用いた、
+簡易モデルの床面の境界点を示す。
+これらの点は、2次元マップ上で手動により入力されたものである。
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{c}
+      \includegraphics[width=0.4\textwidth]{figures/7/corners.png}
+  \end{tabular}
+  \caption{ワイヤーフレームの床面の境界点}
+  \label{seven:four}
+\end{figure}
+
+床面は三角形メッシュとして分割し、各三角形の最大面積を 2.0\,m$^2$ に制限した。
+側面は四角形メッシュとして分割し、天井高は 2.3\,m とした。
+サンプリング間隔については、間隔の違いがテクスチャ割り当て後の外観および自己位置推定結果に与える影響を確認するため、2\,m，3\,m，4\,m の3種類を設定した。
+
+\subsection{ワイヤーフレーム生成結果}
+図\ref{seven:five}に、これらのコーナー点を結ぶ辺に沿って所定のサンプリング間隔で補間点を生成することで構築した
+ワイヤーフレームモデルを示す。サンプリング間隔は左から 2\,m、3\,m、4\,m である。
+床面の三角形メッシュは、コーナー点および補間点に基づいて自動的に三角形分割されていることが確認できる。
+一方、壁面の四角形メッシュについては、サンプリング間隔の変化に伴い生成されるメッシュ形状が変化していることが観察される。
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{ccc}
+    \includegraphics[width=0.3\textwidth]{figures/7/wire1.png} &
+    \includegraphics[width=0.3\textwidth]{figures/7/wire2.png} &
+    \includegraphics[width=0.3\textwidth]{figures/7/wire3.png}
+  \end{tabular}
+  \caption{ワイヤーフレームの床面の境界点（サンプリング間隔：左から 4\,m, 3\,m, 2\,m）}
+  \label{seven:five}
+\end{figure}
+
+\subsection{テクスチャ割り当て結果}
+図\ref{seven:six}に、前節で生成したワイヤーフレームモデルに対して、全方位画像からテクスチャを割り当てた結果を示す。
+なお、壁面ではなく奥行きを有する面については、誤った特徴点座標が自己位置推定に用いられることを防ぐため、あらかじめテクスチャ割り当ての対象から除外している。
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{c}
+    \includegraphics[width=0.8\textwidth]{figures/7/3dmodel.png}
+  \end{tabular}
+  \caption{簡易モデルの全体図}
+  \label{seven:six}
+\end{figure}
+
+図\ref{seven:seven}に、サンプリング間隔の異なるワイヤーフレームごとに、拡大表示した簡易モデルを示す。
+いずれのサンプリング間隔においても、テクスチャは大きな位置ずれを生じることなく、
+各面に対して適切に割り当てられていることが確認できる。
+また、ブレンド処理を行った場合には、隣接するテクスチャ間の接続が滑らかになり、
+視覚的品質の向上に寄与していることがわかる。
+
+サンプリング間隔の違いによる全体的な再現度の差は大きくないものの、
+サンプリング間隔が 4\,m の場合には、テクスチャを大きく拡大して生成する必要があるため、
+引き延ばしによる劣化が確認される。
+一方で、3\,m の場合には、面ごとに割り当てられるテクスチャの大きさにばらつきが生じる点が確認された。
+これらの点から、視覚的品質の観点では、2\,m のサンプリング間隔が最も適していると考えられる。
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{ccc}
+    \includegraphics[width=0.3\textwidth]{figures/7/4m.png}
+    \includegraphics[width=0.3\textwidth]{figures/7/3m.png}
+    \includegraphics[width=0.3\textwidth]{figures/7/2m.png}
+  \end{tabular}
+  \caption{簡易モデルの拡大図（サンプリング間隔：左から 4\,m, 3\,m, 2\,m）}
+  \label{seven:seven}
+\end{figure}
+
+\section{特徴点マッチング手法の比較実験}
+
+\subsection{データセットおよびパラメータ設定}
+前節で生成した簡易モデルのテクスチャと、実環境で撮影された入力画像との間で特徴点マッチングを行い、その精度を評価した。
+入力データには、大学構内C棟5階の廊下環境において、屋内ナビゲーション端末を保持して歩行撮影した動画を用いた。
+動画の解像度は$1920 \times 1080$ピクセルであり、これを1 fps (frame per second) の間隔で静止画として切り出し、評価用画像セットとした。
+
+屋内ナビゲーションを目的とした走行環境においては、カメラが壁面や掲示物に対して正対する状況は限定的であり、進行方向に対して壁面を斜め方向から観測する頻度が高いと考えられる。
+したがって本実験では、視点変化や変形に対する頑健性を確保することを最優先としつつ、ナビゲーション用途としてのリアルタイム性も考慮してパラメータ調整を行った。
+表\ref{seven:eight}にSIFTおよびAKAZE検出器の主なパラメータを示す。
+
+\begin{table}[H]
+  \centering
+  \caption{従来手法（SIFT, AKAZE）のパラメータ設定}
+  \label{seven:eight}
+  \begin{tabular}{l|l|c|c}
+    \hline
+    手法 & パラメータ項目 & 標準値 & \textbf{本実験設定値} \\
+    \hline \hline
+    SIFT & \texttt{nOctaveLayers} & 3 & \textbf{5} \\
+    & \texttt{contrastThreshold} & 0.04 & \textbf{0.03} \\
+    & \texttt{edgeThreshold} & 10 & \textbf{20} \\
+    \hline
+    AKAZE & \texttt{threshold} & 0.001 & \textbf{0.0005} \\
+    & \texttt{nOctaveLayers} & 4 & \textbf{6} \\
+    \hline
+  \end{tabular}
+\end{table}
+
+一方、深層学習ベースの手法であるSuperPointおよびSuperGlueについても、同様に計算効率と精度のトレードオフを考慮した設定を用いた。
+表\ref{seven:nine}にSuperPointおよびSuperGlueのパラメータを示す。
+
+\begin{table}[H] 
+  \centering 
+  \caption{深層学習手法（SuperPoint, SuperGlue）のパラメータ設定} 
+  \label{seven:nine} 
+  \begin{tabular}{l|l|c|l} 
+    \hline 
+    モデル & パラメータ項目 & 標準値 & \textbf{本実験設定値} \\ 
+    \hline \hline 
+    SuperPoint & \texttt{max\_keypoints} & \mbox{無制限} & \textbf{1024} \\
+    & \texttt{keypoint\_threshold} & 0.005 & \textbf{0.001} \\ 
+    \hline 
+    SuperGlue & \texttt{weights} & --- & \textbf{outdoor} \\ 
+    & \texttt{sinkhorn\_iterations} & 20 & \textbf{5} \\
+    \hline 
+  \end{tabular} 
+\end{table}
+
+SuperGlueの重みパラメータ（weights）については、屋内環境での実験であるものの、屋外データで学習された \texttt{outdoor} モデルを採用した。
+一般に屋内では \texttt{indoor} モデルが推奨されるが、本研究の対象である「大学構内の廊下」においては、以下の3点の理由から屋外モデルの方が適していると判断した。
+
+\begin{enumerate}
+    \item \textbf{環境の構造的特徴:}
+    一般的な屋内学習データ（ScanNetなど）は、狭い部屋に置かれた家具や雑貨などの「豊富な模様（テクスチャ）」を頼りに学習されている傾向がある。
+    一方、本実験の環境である廊下は、模様が少なく、長い白壁や天井のラインといった「直線的な構造」が大部分を占めている。この特徴は、複雑な室内よりも、むしろビルの外観や道路といった屋外環境の構造に近い。
+
+    \item \textbf{視点変化への強さ:}
+    ナビゲーション中のカメラ映像は、壁に近づいたり、斜め方向から撮影したりと、見え方が大きく変化する。
+    屋外モデルは、建物を様々な角度から撮影したデータで学習されているため、こうした大きな視点変化に対して頑健である。細かい模様に頼りがちな屋内モデルと比較して、廊下のような大まかな空間構造を捉える能力に長けていると考えられる。
+
+    \item \textbf{予備実験による裏付け:}
+    実際に本環境のデータを用いて比較実験を行ったところ、屋内モデルを使用した場合よりも、屋外モデルを使用した方が安定して多くのマッチング点が得られる傾向が確認された。
+    
+\end{enumerate}
+
+マッチング後の誤対応除去（幾何学的検証）については、各手法の純粋な性能を公平に比較するため、処理条件を統一した。 
+ホモグラフィ行列の推定アルゴリズムには、従来のRANSACと比較してパラメータ依存性が低く、
+ノイズに対してロバストな MAGSAC++ を採用した\cite{magsac}。 
+再投影誤差の許容閾値は、入力が高解像度画像であることを考慮し 5.0 pixel に設定した。 
+また、計算コストの増大を防ぎ推定精度を安定化させるため、検出された全マッチング点を用いるのではなく、
+マッチングスコア上位の 100点 を選抜して幾何学的検証に入力する構成とした。
+
+\subsection{実験結果}
+図\ref{seven:ten}に、従来手法（SIFT, AKAZE）および学習ベースの手法（SuperPoint+SuperGlue）を用いた
+特徴点マッチングの定性的な評価結果の一部を示す。
+図の左列に示すように、生成モデルのテクスチャと入力画像との間の視点差が小さいケースにおいては、
+3手法ともに十分なインライア数を確保し、安定したマッチングに成功した。各手法ごとの詳細な傾向は以下の通りである。
+
+\begin{itemize} 
+  \item \textbf{SIFT:} 
+  視点角度が類似している条件下であれば、撮影距離が離れている場合であってもマッチングが可能であった。
+  しかし、壁面を斜めから見るなど視点変化が大きくなると、マッチングに失敗する事例が多発した。
+
+  \item \textbf{AKAZE:} 
+  SIFTと同様の傾向を示したが、SIFTと比較して視点変化に対する耐性がわずかに優れており、
+  より広い角度範囲でマッチングを維持できる傾向が見られた。
+
+  \item \textbf{SuperPoint+SuperGlue:} 
+  従来手法と比較して、視点変化に対する頑健性が著しく向上した。
+  極端にテクスチャが乏しい領域や、ドア等類似構造しか含まない領域といった高難度なケースを除き、
+  ほぼ全てのフレームにおいてマッチングに成功した。
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.5\textwidth]{figures/7/sift1.jpg}
+    \includegraphics[width=0.5\textwidth]{figures/7/sift2.jpg}\\
+    \includegraphics[width=0.5\textwidth]{figures/7/akaze1.jpg}
+    \includegraphics[width=0.5\textwidth]{figures/7/akaze2.jpg}\\
+    \includegraphics[width=0.5\textwidth]{figures/7/deep1.jpg}
+    \includegraphics[width=0.5\textwidth]{figures/7/deep2.jpg}\\
+  \end{tabular}
+  \caption{特徴点マッチング結果の比較\\上段から SIFT、AKAZE、SuperPoint+SuperGlue を示し、画像内左はテクスチャ画像，右は入力画像である。}
+  \label{seven:ten}
+\end{figure}
+
+表\ref{seven:eleven}に、各手法におけるマッチング成功枚数および1フレームあたりの平均処理時間を示す。
+マッチング成功数については、学習ベースの手法（SuperPoint+SuperGlue）が従来手法（SIFT, AKAZE）と比較して圧倒的に高い値を示した。
+この主な要因は、学習ベース手法が持つ視点変化に対する高い頑健性にある。
+テクスチャ情報が有効に撮像されているフレームにおいては、角度やスケールの変化に関わらず、
+ほぼ全てのケースでマッチングに成功していることが確認された。
+
+一方、平均処理時間に関しては、本実験の設定下ではAKAZEが最も高速な結果となった。
+学習ベースの手法は推論処理を伴うため計算コストが高い傾向にある。
+しかし、本実験では評価のために全フレームに対して探索を行っているが、実際のナビゲーション運用時においては、
+一度自己位置が推定された後は近傍のテクスチャのみを探索対象とする処理を導入することで、計算時間は大幅に削減可能であると考えられる。
+加えて、学習ベースの手法は低解像度画像に対しても高い特徴記述能力を維持する特性があるため、入力解像度をさらに低減させることによる高速化の余地も残されている。
+
+以上の結果より、視点変化が大きく特徴点の抽出が困難な屋内ナビゲーション環境においては、
+処理速度の課題を運用上の工夫で吸収可能であることを踏まえると、ロバスト性に優れる学習ベースの手法が最も適しているといえる。
+したがって、以降の章では特徴点マッチングに学習ベースの手法を採用する。
+
+\begin{table}[H]
+  \centering
+  \caption{各手法におけるマッチング成功枚数と平均処理時間}
+  \label{seven:eleven}
+  \begin{tabular}{l|c|c}
+    \hline
+    手法 & マッチング成功枚数(全 156 枚中) & 平均処理時間[ms] \\
+    \hline \hline
+    SIFT & 12 & 4628 \\
+    AKAZE & 20 & \textbf{147} \\
+    SuperPoint+SuperGlue & \textbf{89} & 4112 \\
+    \hline
+  \end{tabular}
+\end{table}
 
 \section{特徴点マッチングに基づく自己位置推定結果の評価}
 動画の各フレームを抽出し、特徴点マッチングと自己位置推定を実施した。初回は全テクスチャとマッチングを行い、
