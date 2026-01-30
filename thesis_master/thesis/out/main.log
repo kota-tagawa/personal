@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.sjis) (TeX Live 2025) (preloaded format=platex 2025.4.6)  30 JAN 2026 07:39
+This is e-upTeX, Version 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.sjis) (TeX Live 2025) (preloaded format=platex 2025.4.6)  30 JAN 2026 19:58
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -412,11 +412,26 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <20.74> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 10.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <20.74> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 10.
-) (./one.tex
+)
 
-[0
+[1
 
-]
+] (out/main.toc
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10.95> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10.95> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
+
+
+[2
+
+])
+\tf@toc=\write4
+\openout4 = `main.toc'.
+
+(./one.tex
+
+[0]
 第 1 章
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 5.
@@ -431,14 +446,10 @@ File: figures/1/fr3snnnew.png Graphic file (type bmp)
 <figures/1/fr3snnnew.png>
 File: figures/1/snn1new.png Graphic file (type bmp)
 <figures/1/snn1new.png>
-File: figures/1/mask1.png Graphic file (type bmp)
-<figures/1/mask1.png>
 File: figures/1/fr3nnnnew.png Graphic file (type bmp)
 <figures/1/fr3nnnnew.png>
 File: figures/1/nnn2new.png Graphic file (type bmp)
 <figures/1/nnn2new.png>
-File: figures/1/mask2.png Graphic file (type bmp)
-<figures/1/mask2.png>
 
 
 [2]
@@ -473,10 +484,6 @@ File: figures/3/axis.png Graphic file (type bmp)
 
 
 [9]
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10.95> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 127.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10.95> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 127.
 
 LaTeX Warning: Citation `sugaya2024' on page 10 undefined on input line 127.
 
@@ -512,13 +519,13 @@ File: figures/4/superglue_architecture.png Graphic file (type bmp)
 
 [17]
 第 6 章
-File: figures/6/axis2.png Graphic file (type bmp)
-<figures/6/axis2.png>
 
 
 [18
 
 ]
+File: figures/6/axis2.png Graphic file (type bmp)
+<figures/6/axis2.png>
 File: figures/6/arkit_camaxis.png Graphic file (type bmp)
 <figures/6/arkit_camaxis.png>
 
@@ -576,6 +583,12 @@ File: figures/7/3m.png Graphic file (type bmp)
 <figures/7/3m.png>
 File: figures/7/2m.png Graphic file (type bmp)
 <figures/7/2m.png>
+File: figures/7/directions.png Graphic file (type bmp)
+<figures/7/directions.png>
+File: figures/7/input1.jpg Graphic file (type bmp)
+<figures/7/input1.jpg>
+File: figures/7/input2.jpg Graphic file (type bmp)
+<figures/7/input2.jpg>
 
 
 [27]
@@ -594,7 +607,7 @@ File: figures/7/deep1.jpg Graphic file (type bmp)
 File: figures/7/deep2.jpg Graphic file (type bmp)
 <figures/7/deep2.jpg>
 
-Overfull \hbox (15.65001pt too wide) in paragraph at lines 239--247
+Overfull \hbox (15.65001pt too wide) in paragraph at lines 262--270
  [][] 
  []
 
@@ -602,21 +615,32 @@ Overfull \hbox (15.65001pt too wide) in paragraph at lines 239--247
 
 [29]
 
-[30]) (./eight.tex
+[30]
+File: figures/7/deep4m.png Graphic file (type bmp)
+<figures/7/deep4m.png>
+File: figures/7/deep3m.png Graphic file (type bmp)
+<figures/7/deep3m.png>
+File: figures/7/deep2m.png Graphic file (type bmp)
+<figures/7/deep2m.png>
+
 
 [31]
+
+[32]) (./eight.tex
+
+[33]
 第 8 章
 ) (./nine.tex
 
-[32
+[34
 
 ]) (./bibliography.tex
 
-[33
+[35
 
 ]
 
-[34
+[36
 
 ]
 LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
@@ -635,7 +659,7 @@ LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
 (Font)              No change on input line 147.
 )
 
-[35] (out/main.aux)
+[37] (out/main.aux)
  ***********
 pLaTeX2e <2023-02-14>+1, based on
 LaTeX2e <2024-11-01> patch level 2
@@ -645,15 +669,15 @@ L3 programming layer <2025-01-18>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E9B31272CBF93D019B54288FFF63D390;11526.
+(rerunfilecheck)             Checksum: 91841E4817DE21879DC70BC9CF500F1F;11807.
  ) 
 Here is how much of TeX's memory you used:
- 11883 strings out of 475301
- 185741 string characters out of 5768500
- 589553 words of memory out of 5000000
- 34780 multiletter control sequences out of 15000+600000
+ 11919 strings out of 475301
+ 186552 string characters out of 5768500
+ 589980 words of memory out of 5000000
+ 34809 multiletter control sequences out of 15000+600000
  579717 words of font info for 119 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 72i,13n,79p,349b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,13n,79p,374b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on out/main.dvi (36 pages, 171824 bytes).
+Output written on out/main.dvi (40 pages, 211660 bytes).

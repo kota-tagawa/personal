@@ -196,13 +196,28 @@ INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/tmin10.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/min10.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
-INPUT ./one.tex
-INPUT ./one.tex
-INPUT one.tex
 OUTPUT out/main.dvi
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/tmin10.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/min10.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
+INPUT out/main.toc
+INPUT out/main.toc
+INPUT out/main.toc
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/tgoth10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/goth10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/latex-fonts/lasy10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmib10.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbsy10.tfm
+OUTPUT out/main.toc
+INPUT ./one.tex
+INPUT ./one.tex
+INPUT one.tex
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/tmin10.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/min10.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
@@ -217,10 +232,6 @@ INPUT ./figures/1/snn1new.png
 INPUT ./figures/1/snn1new.png
 INPUT ./figures/1/snn1new.png
 INPUT extractbb -B cropbox -O figures/1/snn1new.png
-INPUT ./figures/1/mask1.png
-INPUT ./figures/1/mask1.png
-INPUT ./figures/1/mask1.png
-INPUT extractbb -B cropbox -O figures/1/mask1.png
 INPUT ./figures/1/fr3nnnnew.png
 INPUT ./figures/1/fr3nnnnew.png
 INPUT ./figures/1/fr3nnnnew.png
@@ -229,23 +240,9 @@ INPUT ./figures/1/nnn2new.png
 INPUT ./figures/1/nnn2new.png
 INPUT ./figures/1/nnn2new.png
 INPUT extractbb -B cropbox -O figures/1/nnn2new.png
-INPUT ./figures/1/mask2.png
-INPUT ./figures/1/mask2.png
-INPUT ./figures/1/mask2.png
-INPUT extractbb -B cropbox -O figures/1/mask2.png
 INPUT ./two.tex
 INPUT ./two.tex
 INPUT two.tex
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/latex-fonts/lasy10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmib10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbsy10.tfm
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/goth10.tfm
 INPUT ./figures/2/pointscloud.jpg
 INPUT ./figures/2/pointscloud.jpg
 INPUT ./figures/2/pointscloud.jpg
@@ -266,7 +263,6 @@ INPUT ./figures/3/axis.png
 INPUT ./figures/3/axis.png
 INPUT ./figures/3/axis.png
 INPUT extractbb -B cropbox -O figures/3/axis.png
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/tgoth10.tfm
 INPUT ./four.tex
 INPUT ./four.tex
 INPUT four.tex
@@ -347,6 +343,18 @@ INPUT ./figures/7/2m.png
 INPUT ./figures/7/2m.png
 INPUT ./figures/7/2m.png
 INPUT extractbb -B cropbox -O figures/7/2m.png
+INPUT ./figures/7/directions.png
+INPUT ./figures/7/directions.png
+INPUT ./figures/7/directions.png
+INPUT extractbb -B cropbox -O figures/7/directions.png
+INPUT ./figures/7/input1.jpg
+INPUT ./figures/7/input1.jpg
+INPUT ./figures/7/input1.jpg
+INPUT extractbb -B cropbox -O figures/7/input1.jpg
+INPUT ./figures/7/input2.jpg
+INPUT ./figures/7/input2.jpg
+INPUT ./figures/7/input2.jpg
+INPUT extractbb -B cropbox -O figures/7/input2.jpg
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT ./figures/7/sift1.jpg
 INPUT ./figures/7/sift1.jpg
@@ -372,6 +380,18 @@ INPUT ./figures/7/deep2.jpg
 INPUT ./figures/7/deep2.jpg
 INPUT ./figures/7/deep2.jpg
 INPUT extractbb -B cropbox -O figures/7/deep2.jpg
+INPUT ./figures/7/deep4m.png
+INPUT ./figures/7/deep4m.png
+INPUT ./figures/7/deep4m.png
+INPUT extractbb -B cropbox -O figures/7/deep4m.png
+INPUT ./figures/7/deep3m.png
+INPUT ./figures/7/deep3m.png
+INPUT ./figures/7/deep3m.png
+INPUT extractbb -B cropbox -O figures/7/deep3m.png
+INPUT ./figures/7/deep2m.png
+INPUT ./figures/7/deep2m.png
+INPUT ./figures/7/deep2m.png
+INPUT extractbb -B cropbox -O figures/7/deep2m.png
 INPUT ./eight.tex
 INPUT ./eight.tex
 INPUT eight.tex

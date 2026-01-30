@@ -1,12 +1,12 @@
 # Fdb version 4
-["dvipdf"] 1769726401.08551 "out/main.dvi" "out/main.pdf" "out/main" 1769726411.07431 0
-  "out/main.dvi" 1769726401 171824 208e9ce3c795db730a98dfd0a621d188 "latex"
+["dvipdf"] 1769770726.74497 "out/main.dvi" "out/main.pdf" "out/main" 1769770737.1535 0
+  "out/main.dvi" 1769770726 211660 81b5017330fb9ae2467df2ecd8b97828 "latex"
   (generated)
   "out/main.pdf"
   (rewritten before read)
-["latex"] 1769726398.80171 "c:/223337/personal/thesis_master/thesis/main.tex" "out/main.dvi" "main" 1769726411.07122 0
+["latex"] 1769770724.30588 "c:/223337/personal/thesis_master/thesis/main.tex" "out/main.dvi" "main" 1769770737.15045 0
   "bibliography.tex" 1769720271 6542 f7eef8c9cc1c851da05ebda2302c3b88 ""
-  "c:/223337/personal/thesis_master/thesis/main.tex" 1769726078 2174 7c6e03203a9a87404c41efe1a1677eec ""
+  "c:/223337/personal/thesis_master/thesis/main.tex" 1769767684 2172 ff8fcc816f4303d2d82974878fe5e4e2 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1743929076 1536 02c06700a42be0f5a28664c7273f82e7 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/goth10.tfm" 1743929218 1196 5981e79c37b2cfd27b3612a6783cd4b6 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/ptex-fonts/standard/goth6.tfm" 1743929218 1196 977af188465e721f1f65facb66282510 ""
@@ -118,8 +118,6 @@
   "eight.tex" 1769356164 633 ca83a21abeba5069922208a3db0f79ee ""
   "figures/1/fr3nnnnew.png" 1769664033 57349 be94962c97c6b7c46687e84edfc56492 ""
   "figures/1/fr3snnnew.png" 1769664033 75662 3c010b5eef8617ecbd1b8220681a88ce ""
-  "figures/1/mask1.png" 1769664033 16633 49a5b2b5a7fc7cc3e157a7b9fbd446a3 ""
-  "figures/1/mask2.png" 1769664033 11598 8d5e3d1a24bd61a00409a56ae1bf3fc5 ""
   "figures/1/nnn2new.png" 1769664033 312075 9f1c44b63fbc3eefd6ba14264dcfacbe ""
   "figures/1/snn1new.png" 1769664033 251105 b4045d2c8bee7fdaa50c649801523a64 ""
   "figures/2/3DCG.jpg" 1768536981 11828 6856b0e792d66ae587a64c89c9e571fc ""
@@ -141,6 +139,12 @@
   "figures/7/corners.png" 1769677983 317522 7af1e9e27a63c60c7f4e703d0aa42e2e ""
   "figures/7/deep1.jpg" 1769723864 116376 f1b398e247efebd3c5b335dfd4018cca ""
   "figures/7/deep2.jpg" 1769723864 131782 70847bd3d952a8f679659b077c40c822 ""
+  "figures/7/deep2m.png" 1769766269 64780 13def92858139de5a2cbd327a094eb46 ""
+  "figures/7/deep3m.png" 1769766719 65338 cd4e2be6ba1d7b14bd84b11ef8965a48 ""
+  "figures/7/deep4m.png" 1769766472 63056 b194a1e24af8a58e2b9e07996bda0bc9 ""
+  "figures/7/directions.png" 1769762822 117842 906f116bca9d908105832b885b0f07c6 ""
+  "figures/7/input1.jpg" 1769763268 13896 57a8d64539ef1c53573ae31def7050b9 ""
+  "figures/7/input2.jpg" 1769763268 13973 9b777b639fbd4a98a4c57ed20b1a6938 ""
   "figures/7/omni.png" 1769673567 131259 c8f57d979034d4dc31df4051d53116ab ""
   "figures/7/pers1.png" 1769673590 43095 8eec1c2d66d94b17320e9ed3b08c4f8b ""
   "figures/7/pers2.png" 1769673603 47547 5809e3fbb556f0f5a63079434b296796 ""
@@ -151,19 +155,21 @@
   "figures/7/wire3.png" 1769681131 120744 850bcf85b14883ace7f24ba64f85726e ""
   "five.tex" 1769591255 6313 1785baf4ede70ef497b0a6b7f8c9b7c6 ""
   "four.tex" 1769664033 8669 26e00de59b5417643357d0ba3927b9ad ""
-  "main.tex" 1769726078 2174 7c6e03203a9a87404c41efe1a1677eec ""
+  "main.tex" 1769767684 2172 ff8fcc816f4303d2d82974878fe5e4e2 ""
   "nine.tex" 1769356164 313 a36bd5a318cda6b9d927741715c801ae ""
   "numerical_definition.tex" 1769356164 4750 d87439dbe2065def7c6a296fb609a66d ""
-  "one.tex" 1769664033 15210 8c9405af19caeb60044936bc9d7ad203 ""
-  "out/main.aux" 1769726401 19086 ada3719648d38983dc4d6875066b3481 "latex"
-  "out/main.out" 1769726401 11526 e9b31272cbf93d019b54288fff63d390 "latex"
-  "seven.tex" 1769726398 19855 6907d7e5e5bc0aa2130fee8f319a52db ""
-  "six.tex" 1769597159 16475 702661e093fd05ad41c9c130847cf64f ""
-  "three.tex" 1769582722 14510 7f59591fe277cfdbe485f5920aa5dc88 ""
+  "one.tex" 1769768023 14922 9b8e0dba43dfcfe13d5beb22ddac899e ""
+  "out/main.aux" 1769770726 19934 79e574b46c9ef8322688fc90ddc11b6a "latex"
+  "out/main.out" 1769770726 11807 91841e4817de21879dc70bc9cf500f1f "latex"
+  "out/main.toc" 1769770726 7016 c322b5b0805124b62b0afbd101f60f39 "latex"
+  "seven.tex" 1769770384 25204 f2c8b2217697f1d4b3b505bee9b2179e ""
+  "six.tex" 1769770721 16700 73a110fecb28ecdcdc0bd32c5ffe1adb ""
+  "three.tex" 1769768160 14452 349aa9c0f4c155b25b9c99813076c898 ""
   "two.tex" 1769681307 9691 edf275ab61ec2aa59d6a04bfc2665919 ""
   (generated)
   "out/main.aux"
   "out/main.dvi"
   "out/main.log"
   "out/main.out"
+  "out/main.toc"
   (rewritten before read)
