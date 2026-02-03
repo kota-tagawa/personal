@@ -252,150 +252,147 @@ INPUT ./figures/2/model.png
 INPUT ./figures/2/model.png
 INPUT ./figures/2/model.png
 INPUT extractbb -B cropbox -O figures/2/model.png
-INPUT ./figures/3/axis.png
-INPUT ./figures/3/axis.png
-INPUT ./figures/3/axis.png
-INPUT extractbb -B cropbox -O figures/3/axis.png
+INPUT ./figures/2/axis.png
+INPUT ./figures/2/axis.png
+INPUT ./figures/2/axis.png
+INPUT extractbb -B cropbox -O figures/2/axis.png
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm
 INPUT ./figures/2/sampling.png
 INPUT ./figures/2/sampling.png
 INPUT ./figures/2/sampling.png
 INPUT extractbb -B cropbox -O figures/2/sampling.png
+INPUT ./three.tex
+INPUT ./three.tex
+INPUT three.tex
+INPUT ./figures/3/superpoint_architecture.png
+INPUT ./figures/3/superpoint_architecture.png
+INPUT ./figures/3/superpoint_architecture.png
+INPUT extractbb -B cropbox -O figures/3/superpoint_architecture.png
+INPUT ./figures/3/superglue_architecture.png
+INPUT ./figures/3/superglue_architecture.png
+INPUT ./figures/3/superglue_architecture.png
+INPUT extractbb -B cropbox -O figures/3/superglue_architecture.png
 INPUT ./four.tex
 INPUT ./four.tex
 INPUT four.tex
-INPUT ./figures/4/superpoint_architecture.png
-INPUT ./figures/4/superpoint_architecture.png
-INPUT ./figures/4/superpoint_architecture.png
-INPUT extractbb -B cropbox -O figures/4/superpoint_architecture.png
-INPUT ./figures/4/superglue_architecture.png
-INPUT ./figures/4/superglue_architecture.png
-INPUT ./figures/4/superglue_architecture.png
-INPUT extractbb -B cropbox -O figures/4/superglue_architecture.png
+INPUT ./figures/4/axis2.png
+INPUT ./figures/4/axis2.png
+INPUT ./figures/4/axis2.png
+INPUT extractbb -B cropbox -O figures/4/axis2.png
+INPUT ./figures/4/arkit_camaxis.png
+INPUT ./figures/4/arkit_camaxis.png
+INPUT ./figures/4/arkit_camaxis.png
+INPUT extractbb -B cropbox -O figures/4/arkit_camaxis.png
+INPUT ./figures/4/flow.png
+INPUT ./figures/4/flow.png
+INPUT ./figures/4/flow.png
+INPUT extractbb -B cropbox -O figures/4/flow.png
 INPUT ./five.tex
 INPUT ./five.tex
 INPUT five.tex
+INPUT ./figures/5/camera.png
+INPUT ./figures/5/camera.png
+INPUT ./figures/5/camera.png
+INPUT extractbb -B cropbox -O figures/5/camera.png
+INPUT ./figures/5/omni.png
+INPUT ./figures/5/omni.png
+INPUT ./figures/5/omni.png
+INPUT extractbb -B cropbox -O figures/5/omni.png
+INPUT ./figures/5/pers1.png
+INPUT ./figures/5/pers1.png
+INPUT ./figures/5/pers1.png
+INPUT extractbb -B cropbox -O figures/5/pers1.png
+INPUT ./figures/5/pers2.png
+INPUT ./figures/5/pers2.png
+INPUT ./figures/5/pers2.png
+INPUT extractbb -B cropbox -O figures/5/pers2.png
+INPUT ./figures/5/corners.png
+INPUT ./figures/5/corners.png
+INPUT ./figures/5/corners.png
+INPUT extractbb -B cropbox -O figures/5/corners.png
+INPUT ./figures/5/wire1.png
+INPUT ./figures/5/wire1.png
+INPUT ./figures/5/wire1.png
+INPUT extractbb -B cropbox -O figures/5/wire1.png
+INPUT ./figures/5/wire2.png
+INPUT ./figures/5/wire2.png
+INPUT ./figures/5/wire2.png
+INPUT extractbb -B cropbox -O figures/5/wire2.png
+INPUT ./figures/5/wire3.png
+INPUT ./figures/5/wire3.png
+INPUT ./figures/5/wire3.png
+INPUT extractbb -B cropbox -O figures/5/wire3.png
+INPUT ./figures/5/3dmodel.png
+INPUT ./figures/5/3dmodel.png
+INPUT ./figures/5/3dmodel.png
+INPUT extractbb -B cropbox -O figures/5/3dmodel.png
+INPUT ./figures/5/4m.png
+INPUT ./figures/5/4m.png
+INPUT ./figures/5/4m.png
+INPUT extractbb -B cropbox -O figures/5/4m.png
+INPUT ./figures/5/3m.png
+INPUT ./figures/5/3m.png
+INPUT ./figures/5/3m.png
+INPUT extractbb -B cropbox -O figures/5/3m.png
+INPUT ./figures/5/2m.png
+INPUT ./figures/5/2m.png
+INPUT ./figures/5/2m.png
+INPUT extractbb -B cropbox -O figures/5/2m.png
+INPUT ./figures/5/directions.png
+INPUT ./figures/5/directions.png
+INPUT ./figures/5/directions.png
+INPUT extractbb -B cropbox -O figures/5/directions.png
+INPUT ./figures/5/input1.jpg
+INPUT ./figures/5/input1.jpg
+INPUT ./figures/5/input1.jpg
+INPUT extractbb -B cropbox -O figures/5/input1.jpg
+INPUT ./figures/5/input2.jpg
+INPUT ./figures/5/input2.jpg
+INPUT ./figures/5/input2.jpg
+INPUT extractbb -B cropbox -O figures/5/input2.jpg
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
+INPUT ./figures/5/sift1.jpg
+INPUT ./figures/5/sift1.jpg
+INPUT ./figures/5/sift1.jpg
+INPUT extractbb -B cropbox -O figures/5/sift1.jpg
+INPUT ./figures/5/sift2.jpg
+INPUT ./figures/5/sift2.jpg
+INPUT ./figures/5/sift2.jpg
+INPUT extractbb -B cropbox -O figures/5/sift2.jpg
+INPUT ./figures/5/akaze1.jpg
+INPUT ./figures/5/akaze1.jpg
+INPUT ./figures/5/akaze1.jpg
+INPUT extractbb -B cropbox -O figures/5/akaze1.jpg
+INPUT ./figures/5/akaze2.jpg
+INPUT ./figures/5/akaze2.jpg
+INPUT ./figures/5/akaze2.jpg
+INPUT extractbb -B cropbox -O figures/5/akaze2.jpg
+INPUT ./figures/5/deep1.jpg
+INPUT ./figures/5/deep1.jpg
+INPUT ./figures/5/deep1.jpg
+INPUT extractbb -B cropbox -O figures/5/deep1.jpg
+INPUT ./figures/5/deep2.jpg
+INPUT ./figures/5/deep2.jpg
+INPUT ./figures/5/deep2.jpg
+INPUT extractbb -B cropbox -O figures/5/deep2.jpg
+INPUT ./figures/5/deep4m.png
+INPUT ./figures/5/deep4m.png
+INPUT ./figures/5/deep4m.png
+INPUT extractbb -B cropbox -O figures/5/deep4m.png
+INPUT ./figures/5/deep3m.png
+INPUT ./figures/5/deep3m.png
+INPUT ./figures/5/deep3m.png
+INPUT extractbb -B cropbox -O figures/5/deep3m.png
+INPUT ./figures/5/deep2m.png
+INPUT ./figures/5/deep2m.png
+INPUT ./figures/5/deep2m.png
+INPUT extractbb -B cropbox -O figures/5/deep2m.png
 INPUT ./six.tex
 INPUT ./six.tex
 INPUT six.tex
-INPUT ./figures/6/axis2.png
-INPUT ./figures/6/axis2.png
-INPUT ./figures/6/axis2.png
-INPUT extractbb -B cropbox -O figures/6/axis2.png
-INPUT ./figures/6/arkit_camaxis.png
-INPUT ./figures/6/arkit_camaxis.png
-INPUT ./figures/6/arkit_camaxis.png
-INPUT extractbb -B cropbox -O figures/6/arkit_camaxis.png
-INPUT ./figures/6/flow.png
-INPUT ./figures/6/flow.png
-INPUT ./figures/6/flow.png
-INPUT extractbb -B cropbox -O figures/6/flow.png
 INPUT ./seven.tex
 INPUT ./seven.tex
 INPUT seven.tex
-INPUT ./figures/7/camera.png
-INPUT ./figures/7/camera.png
-INPUT ./figures/7/camera.png
-INPUT extractbb -B cropbox -O figures/7/camera.png
-INPUT ./figures/7/omni.png
-INPUT ./figures/7/omni.png
-INPUT ./figures/7/omni.png
-INPUT extractbb -B cropbox -O figures/7/omni.png
-INPUT ./figures/7/pers1.png
-INPUT ./figures/7/pers1.png
-INPUT ./figures/7/pers1.png
-INPUT extractbb -B cropbox -O figures/7/pers1.png
-INPUT ./figures/7/pers2.png
-INPUT ./figures/7/pers2.png
-INPUT ./figures/7/pers2.png
-INPUT extractbb -B cropbox -O figures/7/pers2.png
-INPUT ./figures/7/corners.png
-INPUT ./figures/7/corners.png
-INPUT ./figures/7/corners.png
-INPUT extractbb -B cropbox -O figures/7/corners.png
-INPUT ./figures/7/wire1.png
-INPUT ./figures/7/wire1.png
-INPUT ./figures/7/wire1.png
-INPUT extractbb -B cropbox -O figures/7/wire1.png
-INPUT ./figures/7/wire2.png
-INPUT ./figures/7/wire2.png
-INPUT ./figures/7/wire2.png
-INPUT extractbb -B cropbox -O figures/7/wire2.png
-INPUT ./figures/7/wire3.png
-INPUT ./figures/7/wire3.png
-INPUT ./figures/7/wire3.png
-INPUT extractbb -B cropbox -O figures/7/wire3.png
-INPUT ./figures/7/3dmodel.png
-INPUT ./figures/7/3dmodel.png
-INPUT ./figures/7/3dmodel.png
-INPUT extractbb -B cropbox -O figures/7/3dmodel.png
-INPUT ./figures/7/4m.png
-INPUT ./figures/7/4m.png
-INPUT ./figures/7/4m.png
-INPUT extractbb -B cropbox -O figures/7/4m.png
-INPUT ./figures/7/3m.png
-INPUT ./figures/7/3m.png
-INPUT ./figures/7/3m.png
-INPUT extractbb -B cropbox -O figures/7/3m.png
-INPUT ./figures/7/2m.png
-INPUT ./figures/7/2m.png
-INPUT ./figures/7/2m.png
-INPUT extractbb -B cropbox -O figures/7/2m.png
-INPUT ./figures/7/directions.png
-INPUT ./figures/7/directions.png
-INPUT ./figures/7/directions.png
-INPUT extractbb -B cropbox -O figures/7/directions.png
-INPUT ./figures/7/input1.jpg
-INPUT ./figures/7/input1.jpg
-INPUT ./figures/7/input1.jpg
-INPUT extractbb -B cropbox -O figures/7/input1.jpg
-INPUT ./figures/7/input2.jpg
-INPUT ./figures/7/input2.jpg
-INPUT ./figures/7/input2.jpg
-INPUT extractbb -B cropbox -O figures/7/input2.jpg
-INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
-INPUT ./figures/7/sift1.jpg
-INPUT ./figures/7/sift1.jpg
-INPUT ./figures/7/sift1.jpg
-INPUT extractbb -B cropbox -O figures/7/sift1.jpg
-INPUT ./figures/7/sift2.jpg
-INPUT ./figures/7/sift2.jpg
-INPUT ./figures/7/sift2.jpg
-INPUT extractbb -B cropbox -O figures/7/sift2.jpg
-INPUT ./figures/7/akaze1.jpg
-INPUT ./figures/7/akaze1.jpg
-INPUT ./figures/7/akaze1.jpg
-INPUT extractbb -B cropbox -O figures/7/akaze1.jpg
-INPUT ./figures/7/akaze2.jpg
-INPUT ./figures/7/akaze2.jpg
-INPUT ./figures/7/akaze2.jpg
-INPUT extractbb -B cropbox -O figures/7/akaze2.jpg
-INPUT ./figures/7/deep1.jpg
-INPUT ./figures/7/deep1.jpg
-INPUT ./figures/7/deep1.jpg
-INPUT extractbb -B cropbox -O figures/7/deep1.jpg
-INPUT ./figures/7/deep2.jpg
-INPUT ./figures/7/deep2.jpg
-INPUT ./figures/7/deep2.jpg
-INPUT extractbb -B cropbox -O figures/7/deep2.jpg
-INPUT ./figures/7/deep4m.png
-INPUT ./figures/7/deep4m.png
-INPUT ./figures/7/deep4m.png
-INPUT extractbb -B cropbox -O figures/7/deep4m.png
-INPUT ./figures/7/deep3m.png
-INPUT ./figures/7/deep3m.png
-INPUT ./figures/7/deep3m.png
-INPUT extractbb -B cropbox -O figures/7/deep3m.png
-INPUT ./figures/7/deep2m.png
-INPUT ./figures/7/deep2m.png
-INPUT ./figures/7/deep2m.png
-INPUT extractbb -B cropbox -O figures/7/deep2m.png
-INPUT ./eight.tex
-INPUT ./eight.tex
-INPUT eight.tex
-INPUT ./nine.tex
-INPUT ./nine.tex
-INPUT nine.tex
 INPUT ./bibliography.tex
 INPUT ./bibliography.tex
 INPUT bibliography.tex

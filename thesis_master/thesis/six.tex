@@ -1,284 +1,37 @@
-\chapter{自己位置推定結果を用いた屋内ナビゲーション}
+\chapter{まとめ}
 
-\section{屋内ナビゲーションの方針}
-\subsection{簡易モデルによる自己位置推定の課題}
-実際のカメラ入力を用いてリアルタイムに動作させる場合、特徴点マッチング処理に起因する遅延により、
-推定位置が端末の実際の位置とずれる可能性がある。
-さらに、屋内環境では常に十分な特徴量が得られるとは限らず、マッチングに失敗して自己位置が更新されない状況も想定される。
-また、屋内ナビゲーションでは利用者がモバイル端末を用いる可能性が高く、ネットワーク通信による処理遅延が生じる場合には自己位置推定のリアルタイム性に大きな影響が出る可能性がある。
+\section{本研究の成果} 
+本研究では、テクスチャ情報の乏しい屋内環境において、
+既存の二次元マップと全方位画像のみを用いた簡易三次元モデルによる自己位置推定手法を確立した。 
+本研究により得られた主な成果は以下の通りである。
 
-\subsection{提案手法に基づく屋内ナビゲーションの基本方針}
-本研究では、特徴点マッチングに基づく自己位置推定結果を用いて、屋内空間におけるナビゲーションを実現することを目的とする。
-推定された自己位置情報は、ユーザに対して進行方向や目的地までの誘導情報を提示するために用いられる。
+\begin{enumerate} 
+  \item \textbf{簡易三次元モデルによる実用的な自己位置推定の実現}: 
+  特別な設備や厳密な形状復元を必要とせず、カメラ視点に基づく最適なサンプリングとブレンド処理を導入することで、
+  視覚的品質と推定精度を両立するモデル生成手法を構築した。 
+  さらに、生成したモデルに対して深層学習ベースの特徴点抽出を適用することで、
+  従来手法では対応が困難であった特徴の乏しい壁面や視点変化の激しい状況下でも、
+  実用的な精度で自己位置推定が可能であることを示した。
 
-しかしながら、特徴点マッチングに基づく手法は計算コストが高く、リアルタイム性や安定性の観点から単独での利用には課題があると考えられる。
-そのため、本研究では提案する自己位置推定手法をナビゲーションの基準情報として用いつつ、
-状況に応じた補完手段を導入する方針とする。
-屋内環境における自己位置推定の安定性を向上させるため、本研究ではモバイル端末に搭載された自己位置推定機能を併用する。
-具体的には、VIO(Visual-Inertial Odometory)による自己位置推定結果を併用し、
-特徴点マッチングに失敗した場合や推定結果が得られない期間においてもナビゲーションの連続性を維持する。
-
-\subsection{(Visual-Inertial Odometory)による自己位置推定}
-Visual-Inertial Odometry（VIO）は、端末に搭載されたIMU（加速度計・ジャイロスコープ等の慣性センサ）とカメラから取得した画像情報を統合することで、端末の位置姿勢を高頻度に推定する手法である。
-Apple社が提供するARKitは、このVIO技術を中核とした自己位置推定フレームワークである\cite{AppleARKitTracking}。
-ARKitは、内部処理において局所的な特徴点マップを構築するため、モバイル端末におけるSLAM（Simultaneous Localization and Mapping）と同等の機能を実現している。
-ARKit による自己位置推定は、端末内のみで処理されるため外部インフラを必要とせず、リアルタイム性が確保されやすい一方、
-カメラ視野が環境特徴に乏しい状況では推定精度が低下する可能性がある点に注意が必要である\cite{AppleARKitWorldTracking}。
-
-ARKitでは、ワールド座標系が内部的に定義されており、初期化時の端末位置が原点として設定される。  
-座標軸は右手系で定義されており、重力と反対方向を$Y$軸、カメラの向いている方向を$Z$軸とし、$Y$軸と$Z$軸の外積が$X$軸となる。  
-以降のフレームにおける端末の位置姿勢は、このワールド座標系に対する相対的な変換として表現される。
-
-本研究では、このARKitによって定義されるワールド座標系をAR座標系と呼ぶ。  
-ここで、ユーザが定義する世界座標系を含めた各座標系の関係を図\ref{six:one}に示す。
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics[width=0.7\textwidth]{figures/6/axis2.png}
-    \caption{世界座標系とカメラ座標系、AR座標系の関係}
-    \label{six:one}
-  \end{center}
-\end{figure}
-ここで注意すべき点は、カメラ座標系の軸の符号定義が異なることである。  
-OpenCVにおけるカメラ座標系では、$X$軸は右方向、$Y$軸は下方向、$Z$軸は奥行き方向が正となる。  
-一方、ARKitのカメラ座標系では、$X$軸は右方向、$Y$軸は上方向、$Z$軸は手前方向が正となる。図\ref{six:two}にその定義を示す。
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics[width=0.4\textwidth]{figures/6/arkit_camaxis.png}
-    \caption{ARKitカメラ座標系の定義}
-    \label{six:two}
-  \end{center}
-\end{figure}
-自己位置推定結果を補完するためには、ここで示した座標系の違いを考慮した上で、各座標系間の相互変換が必要となる。
-
-\section{自己位置推定手法の使い分けと比較方針}
-本研究では、屋内ナビゲーションにおける実用的な自己位置推定手法を検討するため、
-性質の異なる3つの自己位置推定手法を比較対象として設定した。
-これらは、提案手法単独の場合、既存のモバイル端末における標準的手法の場合、
-および両者を組み合わせた場合をそれぞれ代表するものである。
-\begin{enumerate}
-  \item 提案手法（特徴点マッチングによる自己位置推定）
-  本研究の提案内容そのものの性能を評価するための基準として位置付ける。
-  環境モデルとの対応付けに基づいて絶対的な自己位置推定が可能である一方、計算時間や誤推定が課題となる可能性がある。
-  \item ARKitによる自己位置推定
-  モバイル端末上で動作する一般的な自己位置推定手法として位置づける。
-  リアルタイム性に優れている一方、視覚情報に乏しい環境では精度が低下する可能性がある。
-  \item 複合的手法（提案手法 + ARKit）
-  提案手法を基準情報として用いつつ、推定が困難な状況では ARKit の推定結果を利用する方式である。
-  これにより、両者の利点を活かしたより安定的かつ実用的な自己位置推定の可能性を検討する。
+\item \textbf{屋内ナビゲーションの実証}: 
+  提案手法を実装した屋内ナビゲーションシステムを開発し、大学構内での実証実験を通じてその有効性を検証した。 
+  実験の結果、モバイル端末の VIO は特徴の乏しい領域でドリフトが生じやすく、
+  提案手法による補正は断続的であるというそれぞれの課題が確認された。 
+  これらを統合することで、VIOが移動の連続性を維持しつつ、提案手法が累積誤差を定期的に補正するという相互補完効果が得られ、
+  特徴点が検出されにくい区間においてもスムーズなナビゲーションを実現できることを実証した。 
 \end{enumerate}
-以上の三つの手法を比較することで、屋内ナビゲーションにおけるより実用的な自己位置推定手法を理論的に検討する。
 
-\section{屋内ナビゲーションシステムの構成}
-屋内ナビゲーションシステムの構成について説明する。システムの流れを図\ref{six:three}に示す。
-\begin{figure}[H]
-  \centering
-  \begin{tabular}{c}
-      \includegraphics[width=0.9\linewidth]{figures/6/flow.png}
-  \end{tabular}
-  \caption{世界座標系とカメラ座標系、画像座標系の関係}
-  \label{six:three}
-\end{figure}
+\section{今後の展望}
+本研究の課題および今後の発展として、主に以下の2点が挙げられる。
 
-\subsection{目的地設定}
+\begin{enumerate} 
+  \item \textbf{線特徴の活用による頑健性の向上}: 
+  現状の手法ではテクスチャの点特徴のみに依存しているため、白壁など特徴の乏しい領域では精度が低下しやすい。
+  これに対し、本研究の簡易モデルはワイヤーフレームを骨格としているため、画像から検出した線特徴との親和性が高い。
+  柱やドア枠などの幾何構造を直接活用することで、点特徴の乏しい領域における推定精度の向上を図る。
 
-マップ画像上でのタップ操作により目的地を指定する方法を用いる。
-ユーザは表示されたマップ画像上を順にタップすることで、目的地までの経路点を指定する。
-各タップ位置は、マップ上の画像座標として取得される。入力が確定すると、あらかじめ算出したマップ上の画像座標と世界座標を対応付けるホモグラフィ行列を用いて、世界座標系へ変換する。
-変換後の世界座標列は、後続の自己位置推定およびナビゲーション処理における目的地情報として利用する。
-
-\subsection{カメラ画像取得および端末とPC間の通信}
-
-端末側では、カメラ画像と撮影時刻を取得し、初期位置推定時は、カメラの内部パラメータも併せて取得する。
-また、撮影時におけるAR座標系とカメラ座標系の変換行列を保存する。  
-取得したカメラ画像は、通信負荷を低減するために圧縮処理を行う。
-2回目以降の推定では、ARKitにより更新されたカメラの位置姿勢情報も用い、これらをJSON形式にまとめ、WebSocketを用いた双方向通信によってPCへ送信する。
-
-PCで推定されたカメラの位置姿勢情報は、同じくWebSocketを介して端末側へ送信され、世界座標系とAR座標系の関係の更新に用いられる。  
-なお、一定時間以上姿勢情報が受信されない場合には、自己位置が喪失したものと判断し、初期位置推定を再度実行する。
-
-\subsection{自己位置推定結果の受信および座標系の更新}
-
-端末側では、PCで推定された世界座標系とカメラ座標系の変換行列を受信する。  
-受信した世界座標系とカメラ座標系の回転行列$\mathbf{R}_{\mathrm{world}\rightarrow\mathrm{cam}}$
-および並進ベクトル$\mathbf{t}_{\mathrm{world}\rightarrow\mathrm{cam}}$と、
-撮影時におけるAR座標系とカメラ座標系の変換行列$\mathbf{T}_{\mathrm{cam}\rightarrow\mathrm{AR}}$
-を用いて、世界座標系とAR座標系の変換行列を更新する。  
-これにより、世界座標系とAR座標系の相互変換が可能となり、PCによる自己位置推定が困難なタイミングにおいても、ARKitによる自己位置推定結果を継続的に利用できる。  
-更新された座標系の関係は、目的地のARオブジェクトの描画や、カメラの位置姿勢を世界座標系へ変換する際に用いられる。
-変換行列を更新した後、一定時間経過後に再度カメラ画像を取得し、PCによる自己位置推定を行う。
-
-\subsection{変換行列の計算}
-
-ARKit座標系$\rightarrow$世界座標系の変換行列
-（$\mathbf{R}_{\mathrm{ar} \rightarrow \mathrm{world}}, \mathbf{t}_{\mathrm{ar} \rightarrow \mathrm{world}}$）
-の計算方法を以下に示す。
-
-
-ARKitでは、各フレームのデバイスの姿勢は、カメラ変換行列(ARFrame.camera.transform)で表される。
-この変換行列はカメラ座標系から、AR座標系の変換を表す$4\times{4}$の同次変換行列であり，次のように書ける：
-\begin{equation}
-\mathbf{T}_{\mathrm{cam}\rightarrow\mathrm{AR}} =
-\begin{bmatrix}
-\mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{AR}} & \mathbf{t}_{\mathrm{cam}\rightarrow\mathrm{AR}} \\
-\mathbf{0}^\mathrm{T} & 1
-\end{bmatrix}
-\end{equation}
-ここで，
-$\mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}$は
-カメラ座標系からAR座標系への回転行列、
-$\mathbf{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}$ は
-AR座標系におけるカメラ原点位置を表す並進ベクトルである。
-
-
-ここで、カメラ座標系$\rightarrow$ARKit座標系の変換は以下の式\ref{eq:one}で表される。
-\begin{equation}
-  \mathbf{X}_{\mathrm{ar}}
-  =
-  \mathbf{R}_{\mathrm{cam1}\rightarrow\mathrm{ar}}
-  \mathbf{X}_{\mathrm{cam1}}
-  +
-  \mathbf{t}_{\mathrm{cam1}\rightarrow\mathrm{ar}}
-  \label{eq:one}
-\end{equation}
-
-また、世界座標系$\rightarrow$カメラ座標系の変換は以下の式\ref{eq:two}で表される。
-\begin{equation}
-  \mathbf{X}_{\mathrm{cam2}}
-  =
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{cam2}}
-  \mathbf{X}_{\mathrm{world}}
-  +
-  \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{cam2}}
-  \label{eq:two}
-\end{equation}
-
-さらに、ARKitのカメラ座標系$\mathbf{X}_{\mathrm{cam1}}$と世界座標系のカメラ座標系$\mathbf{X}_{\mathrm{cam2}}$の座標系の違いは
-以下の式\ref{eq:three}で表される
-\begin{align}
-  \mathbf{X}_{\mathrm{cam2}}
-  = \mathbf{S}\,\mathbf{X}_{\mathrm{cam1}}
-  \\
-  \mathbf{S}
-  =
-  \begin{bmatrix}
-  1 & 0 & 0 \\
-  0 & -1 & 0 \\
-  0 & 0 & -1
-  \end{bmatrix}
-  \label{eq:three}
-\end{align}
-
-式\ref{eq:one}、式\ref{eq:two}、式\ref{eq:three}から、
-世界座標系$\rightarrow$ARKit座標系の変換は以下の式\ref{eq:four}で整理される。
-\begin{align}
-  \mathbf{X}_{\mathrm{ar}}
-  &=
-  \mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{ar}}(\mathbf{S}(
-    \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{cam2}}
-    \mathbf{X}_{\mathrm{world}}
-    +
-    \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{cam2}}
-  ))
-  +
-  \mathbf{t}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \\
-  \mathbf{X}_{\mathrm{ar}}
-  &=
-  (\mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \mathbf{S}
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{cam2}})
-  \mathbf{X}_{\mathrm{world}}
-  +
-  \mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \mathbf{S}
-  \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{cam2}}
-  +
-  \mathbf{t}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \\
-  \mathbf{X}_{\mathrm{ar}}
-  &=
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{ar}}\mathbf{X}_{\mathrm{world}}
-  +
-  \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{ar}}
-\end{align}
-
-\begin{align}
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{ar}}
-  &=
-  \mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \mathbf{S}
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{cam2}}
-  \\
-  \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{ar}}
-  &=
-  \mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \mathbf{S}
-  \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{cam2}}
-  +
-  \mathbf{t}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \label{eq:four}
-\end{align}
-
-式\ref{eq:four}より、世界座標系とARKit座標系の座標変換は式\ref{eq:five}で表される。
-\begin{align}
-  \mathbf{X}_{\mathrm{world}}
-  &=
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{ar}}^{\top}
-  \mathbf{X}_{\mathrm{ar}}
-  -
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{ar}}^{\top}
-  \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{ar}}
-  \\
-  \mathbf{X}_{\mathrm{world}}
-  &=
-  \mathbf{R}_{\mathrm{ar}\rightarrow\mathrm{world}}\mathbf{X}_{\mathrm{ar}}
-  +
-  \mathbf{t}_{\mathrm{ar}\rightarrow\mathrm{world}}
-\end{align}
-
-\begin{align}
-  \mathbf{R}_{\mathrm{ar}\rightarrow\mathrm{world}}
-  &=
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{ar}}^{\top}
-  \\
-  &=
-  (\mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \mathbf{S}
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
-  )^{\top}
-  \\
-  \mathbf{t}_{\mathrm{ar}\rightarrow\mathrm{world}}
-  &=
-  -
-  \mathbf{R}_{\mathrm{world}\rightarrow\mathrm{ar}}^{\top}
-  \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{ar}}
-  \\
-  &=
-  -
-  \mathbf{R}_{\mathrm{ar}\rightarrow\mathrm{world}}
-  (
-  \mathbf{R}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  \mathbf{S}
-  \mathbf{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
-  +
-  \mathbf{t}_{\mathrm{cam}\rightarrow\mathrm{ar}}
-  )
-  \label{eq:five}
-\end{align}
-
-\subsection{目的地および進行方向オブジェクトの描画}
-更新された世界座標系とAR座標系の関係に基づき、目的地および進行方向を示すARオブジェクトの描画を行う。  
-まず、マップから取得した経路上の目的地座標を世界座標系で取得し、世界座標系からAR座標系への変換を行うことで、目的地のAR空間上の位置を算出する。  
-
-算出されたAR座標系上の位置に対してARアンカーを生成する。  
-ARアンカーは、AR空間中の特定位置に仮想オブジェクトを安定して配置するための基準点として用いられ、端末の移動に伴っても一貫した位置関係を保つ役割を持つ。  
-生成したアンカーに目的地を示すオブジェクトを紐付けることで、目的地をAR空間上に表示する。  
-目的地が更新された場合には、既存のアンカーを削除し新たにアンカーを生成することで表示内容を更新する。
-
-また、各フレームにおいてカメラの位置姿勢を取得し、カメラ前方に進行方向を示す矢印オブジェクトを配置する。  
-矢印オブジェクトが目的地の方向を向くように姿勢を更新することで、ユーザに対して目的地までの直感的な誘導を実現する。  
-さらに、カメラの位置および前方方向ベクトルを毎フレーム更新することで、自己位置推定結果を継続的に利用可能とし、
-PCによる自己位置推定結果が適切であるかを判断するための指標としても用いることができる。
-
-カメラ位置と目的地オブジェクトとの距離を算出し、一定の閾値以内に到達した場合には、目的地に到着したと判定する。  
-経路上に複数の目的地が存在する場合には、次の目的地へ切り替え、対応するARオブジェクトの更新を行う。
+  \item \textbf{実利用者によるナビゲーション評価}: 
+  システムの実用性を検証するためには、多様な環境下で、多様な属性を持つ被験者を対象とした実証実験が必要となる。
+  目的地到達の正確性といった定量的な評価に加え、ナビゲーションの円滑さや、AR 表示の分かりやすさなど、
+  ユーザビリティの観点からシステムを多角的に評価・改善する必要がある。
+\end{enumerate}

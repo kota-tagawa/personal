@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.sjis) (TeX Live 2025) (preloaded format=platex 2025.4.6)  2 FEB 2026 19:05
+This is e-upTeX, Version 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.sjis) (TeX Live 2025) (preloaded format=platex 2025.4.6)  3 FEB 2026 22:50
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -426,6 +426,8 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (./one.tex
 
 [0]
+
+[1]
 第 1 章
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 3.
@@ -433,7 +435,7 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 3.
 
 
-[1
+[2
 
 ]
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
@@ -450,11 +452,11 @@ File: figures/1/nnn2new.png Graphic file (type bmp)
 <figures/1/nnn2new.png>
 
 
-[2]
+[3]
 
-[3]) (./two.tex
+[4]) (./two.tex
 
-[4]
+[5]
 第 2 章
 File: figures/2/pointscloud.jpg Graphic file (type bmp)
 <figures/2/pointscloud.jpg>
@@ -462,146 +464,161 @@ File: figures/2/3DCG.jpg Graphic file (type bmp)
 <figures/2/3DCG.jpg>
 File: figures/2/model.png Graphic file (type bmp)
 <figures/2/model.png>
-File: figures/3/axis.png Graphic file (type bmp)
-<figures/3/axis.png>
+File: figures/2/axis.png Graphic file (type bmp)
+<figures/2/axis.png>
 
 
-[5
+[6
 
 ]
-
-[6]
 
 [7]
 
 [8]
+
+[9]
 File: figures/2/sampling.png Graphic file (type bmp)
 <figures/2/sampling.png>
 
 
-[9]
-
 [10]
 
 [11]
+Overfull \hbox (22.06017pt too wide) in paragraph at lines 347--350
+[]\JY1/mc/m/n/10.95 ここで 、 $\OML/cmm/m/it/10.95 u[]; v[]$ \JY1/mc/m/n/10.95 は各軸における座標の最小値であり、 $\OML/cmm/m/it/10.95 S$ \JY1/mc/m/n/10.95 は座標群の最大辺長 （$\OML/cmm/m/it/10.95 S \OT1/cmr/m/n/10.95 = [][]\OMS/cmsy/m/n/10.95 f[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 u[] \OMS/cmsy/m/n/10.95 ^^@
+ []
+
+
 
 [12]
 
-[13]) (./four.tex
+[13]
 
 [14]
+
+[15]
+
+[16]
+
+[17]) (./three.tex
+
+[18]
 第 3 章
 
 
-[15
+[19
 
 ]
-File: figures/4/superpoint_architecture.png Graphic file (type bmp)
-<figures/4/superpoint_architecture.png>
+File: figures/3/superpoint_architecture.png Graphic file (type bmp)
+<figures/3/superpoint_architecture.png>
 
 
-[16]
-File: figures/4/superglue_architecture.png Graphic file (type bmp)
-<figures/4/superglue_architecture.png>
-) (./five.tex
-
-[17]
-第 4 章
-
-
-[18
-
-]) (./six.tex
-
-[19]
-第 5 章
-
-
-[20
-
-]
-File: figures/6/axis2.png Graphic file (type bmp)
-<figures/6/axis2.png>
-File: figures/6/arkit_camaxis.png Graphic file (type bmp)
-<figures/6/arkit_camaxis.png>
+[20]
+File: figures/3/superglue_architecture.png Graphic file (type bmp)
+<figures/3/superglue_architecture.png>
 
 
 [21]
-File: figures/6/flow.png Graphic file (type bmp)
-<figures/6/flow.png>
+
+LaTeX Warning: Reference `uv' on page 22 undefined on input line 123.
+
 
 
 [22]
 
-[23])
+[23]) (./four.tex
 
-[24] (./seven.tex
-
-[25]
-第 6 章
-File: figures/7/camera.png Graphic file (type bmp)
-<figures/7/camera.png>
+[24]
+第 4 章
 
 
-[26
+[25
 
 ]
-File: figures/7/omni.png Graphic file (type bmp)
-<figures/7/omni.png>
-File: figures/7/pers1.png Graphic file (type bmp)
-<figures/7/pers1.png>
-File: figures/7/pers2.png Graphic file (type bmp)
-<figures/7/pers2.png>
+File: figures/4/axis2.png Graphic file (type bmp)
+<figures/4/axis2.png>
+File: figures/4/arkit_camaxis.png Graphic file (type bmp)
+<figures/4/arkit_camaxis.png>
+
+
+[26]
+
+[27]
+File: figures/4/flow.png Graphic file (type bmp)
+<figures/4/flow.png>
+
+
+[28]
+
+[29]
+
+[30]) (./five.tex
+
+[31]
+第 5 章
+File: figures/5/camera.png Graphic file (type bmp)
+<figures/5/camera.png>
+
+
+[32
+
+]
+File: figures/5/omni.png Graphic file (type bmp)
+<figures/5/omni.png>
+File: figures/5/pers1.png Graphic file (type bmp)
+<figures/5/pers1.png>
+File: figures/5/pers2.png Graphic file (type bmp)
+<figures/5/pers2.png>
 
 Overfull \hbox (36.00005pt too wide) in paragraph at lines 62--67
  [][] 
  []
 
-File: figures/7/corners.png Graphic file (type bmp)
-<figures/7/corners.png>
+File: figures/5/corners.png Graphic file (type bmp)
+<figures/5/corners.png>
 
 
-[27]
-File: figures/7/wire1.png Graphic file (type bmp)
-<figures/7/wire1.png>
-File: figures/7/wire2.png Graphic file (type bmp)
-<figures/7/wire2.png>
-File: figures/7/wire3.png Graphic file (type bmp)
-<figures/7/wire3.png>
+[33]
+File: figures/5/wire1.png Graphic file (type bmp)
+<figures/5/wire1.png>
+File: figures/5/wire2.png Graphic file (type bmp)
+<figures/5/wire2.png>
+File: figures/5/wire3.png Graphic file (type bmp)
+<figures/5/wire3.png>
 
 
-[28]
-File: figures/7/3dmodel.png Graphic file (type bmp)
-<figures/7/3dmodel.png>
-File: figures/7/4m.png Graphic file (type bmp)
-<figures/7/4m.png>
-File: figures/7/3m.png Graphic file (type bmp)
-<figures/7/3m.png>
-File: figures/7/2m.png Graphic file (type bmp)
-<figures/7/2m.png>
-File: figures/7/directions.png Graphic file (type bmp)
-<figures/7/directions.png>
-File: figures/7/input1.jpg Graphic file (type bmp)
-<figures/7/input1.jpg>
-File: figures/7/input2.jpg Graphic file (type bmp)
-<figures/7/input2.jpg>
+[34]
+File: figures/5/3dmodel.png Graphic file (type bmp)
+<figures/5/3dmodel.png>
+File: figures/5/4m.png Graphic file (type bmp)
+<figures/5/4m.png>
+File: figures/5/3m.png Graphic file (type bmp)
+<figures/5/3m.png>
+File: figures/5/2m.png Graphic file (type bmp)
+<figures/5/2m.png>
+File: figures/5/directions.png Graphic file (type bmp)
+<figures/5/directions.png>
+File: figures/5/input1.jpg Graphic file (type bmp)
+<figures/5/input1.jpg>
+File: figures/5/input2.jpg Graphic file (type bmp)
+<figures/5/input2.jpg>
 
 
-[29]
+[35]
 
-[30]
-File: figures/7/sift1.jpg Graphic file (type bmp)
-<figures/7/sift1.jpg>
-File: figures/7/sift2.jpg Graphic file (type bmp)
-<figures/7/sift2.jpg>
-File: figures/7/akaze1.jpg Graphic file (type bmp)
-<figures/7/akaze1.jpg>
-File: figures/7/akaze2.jpg Graphic file (type bmp)
-<figures/7/akaze2.jpg>
-File: figures/7/deep1.jpg Graphic file (type bmp)
-<figures/7/deep1.jpg>
-File: figures/7/deep2.jpg Graphic file (type bmp)
-<figures/7/deep2.jpg>
+[36]
+File: figures/5/sift1.jpg Graphic file (type bmp)
+<figures/5/sift1.jpg>
+File: figures/5/sift2.jpg Graphic file (type bmp)
+<figures/5/sift2.jpg>
+File: figures/5/akaze1.jpg Graphic file (type bmp)
+<figures/5/akaze1.jpg>
+File: figures/5/akaze2.jpg Graphic file (type bmp)
+<figures/5/akaze2.jpg>
+File: figures/5/deep1.jpg Graphic file (type bmp)
+<figures/5/deep1.jpg>
+File: figures/5/deep2.jpg Graphic file (type bmp)
+<figures/5/deep2.jpg>
 
 Overfull \hbox (15.65001pt too wide) in paragraph at lines 262--270
  [][] 
@@ -609,34 +626,39 @@ Overfull \hbox (15.65001pt too wide) in paragraph at lines 262--270
 
 
 
-[31]
+[37]
 
-[32]
-File: figures/7/deep4m.png Graphic file (type bmp)
-<figures/7/deep4m.png>
-File: figures/7/deep3m.png Graphic file (type bmp)
-<figures/7/deep3m.png>
-File: figures/7/deep2m.png Graphic file (type bmp)
-<figures/7/deep2m.png>
+[38]
+File: figures/5/deep4m.png Graphic file (type bmp)
+<figures/5/deep4m.png>
+File: figures/5/deep3m.png Graphic file (type bmp)
+<figures/5/deep3m.png>
+File: figures/5/deep2m.png Graphic file (type bmp)
+<figures/5/deep2m.png>
+
+Overfull \hbox (14.80247pt too wide) in paragraph at lines 314--319
+ [][] 
+ []
 
 
-[33]
 
-[34]) (./eight.tex
+[39]
 
-[35]
-第 7 章
-) (./nine.tex
+[40]) (./six.tex
 
-[36
+[41]
+第 6 章
+) (./seven.tex
+
+[42
 
 ]) (./bibliography.tex
 
-[37
+[43
 
 ]
 
-[38
+[44
 
 ]
 LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
@@ -651,26 +673,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 138--143
 \OT1/cmr/m/n/10.95 tion, [][]$\OT1/cmtt/m/n/10.95 https : / / developer . apple . com / documentation / arkit / world _ tracking /
  []
 
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 147.
 )
 
-[39] (out/main.aux)
+[45] (out/main.aux)
  ***********
 pLaTeX2e <2023-02-14>+1, based on
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 50CEB7F301E6DB6C5D38262DC86102B7;12332.
+(rerunfilecheck)             Checksum: D196DDF7381F8F98E44490B7AD9D1242;12869.
  ) 
 Here is how much of TeX's memory you used:
- 11917 strings out of 475301
- 186598 string characters out of 5768500
- 590567 words of memory out of 5000000
- 34809 multiletter control sequences out of 15000+600000
+ 11913 strings out of 475301
+ 186518 string characters out of 5768500
+ 589234 words of memory out of 5000000
+ 34810 multiletter control sequences out of 15000+600000
  578955 words of font info for 116 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 72i,13n,79p,374b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,13n,79p,400b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on out/main.dvi (42 pages, 227684 bytes).
+Output written on out/main.dvi (48 pages, 254636 bytes).

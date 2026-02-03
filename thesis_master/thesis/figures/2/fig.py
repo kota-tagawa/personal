@@ -21,7 +21,7 @@ ax_legend.axis('off')
 
 
 # === 共通描画関数 ===
-def draw_floor_base(ax, p0_label=r'$\mathbf{p}_0$', p1_label=r'$\mathbf{p}_1$'):
+def draw_floor_base(ax, p0_label=r'$\boldsymbol{p}_0$', p1_label=r'$\boldsymbol{p}_1$'):
     ax.set_aspect('equal')
     ax.axis('off')
     # 床の線
@@ -45,11 +45,11 @@ d_th = 7.5      # 閾値距離（円の半径）
 
 # カメラ
 ax_a.plot(cx, cy, 'x', color='black', markersize=14, markeredgewidth=3, zorder=3)
-ax_a.text(cx, cy + 0.5, r'$\mathbf{c}$', ha='center', fontsize=20, fontweight='bold')
+ax_a.text(cx, cy + 0.5, r'$\boldsymbol{c}$', ha='center', fontsize=20, fontweight='bold')
 
 # 射影点
 ax_a.plot(px, py, 'x', color='black', markersize=14, markeredgewidth=3, zorder=3)
-ax_a.text(px + 0.5, 0.5, r'$\mathbf{p}_{\mathrm{proj}}$', ha='left', fontsize=20, fontweight='bold')
+ax_a.text(px + 0.5, 0.5, r'$\boldsymbol{p}_{\mathrm{proj}}$', ha='left', fontsize=20, fontweight='bold')
 
 # 破線（射影線）と直角記号
 ax_a.plot([cx, px], [cy, py], '--', color='black', linewidth=2)
@@ -59,18 +59,18 @@ ax_a.add_patch(rect)
 # ベクトル矢印 d
 ax_a.annotate('', xy=(10, -0.5), xytext=(0, -0.5),
               arrowprops=dict(arrowstyle='->', lw=2.5, color='black'))
-ax_a.text(5, -0.8, r'$\mathbf{d}$', ha='center', va='top', fontsize=20, fontweight='bold')
+ax_a.text(5, -0.8, r'$\boldsymbol{d}$', ha='center', va='top', fontsize=20, fontweight='bold')
 
 # ベクトル矢印 td
 ax_a.annotate('', xy=(px, 0.5), xytext=(0, 0.5),
               arrowprops=dict(arrowstyle='->', lw=2.0, color='black'))
-ax_a.text(px/2, 0.8, r'$t\mathbf{d}$', ha='center', fontsize=20, fontweight='bold')
+ax_a.text(px/2, 0.8, r'$t\boldsymbol{d}$', ha='center', fontsize=20, fontweight='bold')
 
 ax_a.text(cx - 2.0,  cy - 3.0, r'$d_{\mathrm{th}}$', fontsize=20)
 
 
 # 条件式ボックス (白い四角で囲む)
-text_box_content = r'$0 \leq t \leq 1$' + '\n' + r'$\|\mathbf{c} - \mathbf{p}_{\mathrm{proj}}\| \leq d_{\mathrm{th}}$'
+text_box_content = r'$0 \leq t \leq 1$' + '\n' + r'$\|\boldsymbol{c} - \boldsymbol{p}_{\mathrm{proj}}\| \leq d_{\mathrm{th}}$'
 box_x, box_y = cx + 0.5, cy - 3.0 # 位置調整
 rect_box = patches.Rectangle((box_x, box_y), 5.5, 2.5, linewidth=1.5, edgecolor='black', facecolor='white', zorder=4)
 ax_a.add_patch(rect_box)
@@ -92,8 +92,8 @@ offset = 2.0 # 内側への移動量
 # 射影点 (x)
 ax_b.plot(p1_x, 0, 'x', color='black', markersize=14, markeredgewidth=3, zorder=3)
 ax_b.plot(p2_x, 0, 'x', color='black', markersize=14, markeredgewidth=3, zorder=3)
-ax_b.text(p1_x, -1.0, r'$\mathbf{p}_{\mathrm{proj}1}$', ha='center', va='top', fontsize=16, fontweight='bold')
-ax_b.text(p2_x, -1.0, r'$\mathbf{p}_{\mathrm{proj}2}$', ha='center', va='top', fontsize=16, fontweight='bold')
+ax_b.text(p1_x, -1.0, r'$\boldsymbol{p}_{\mathrm{proj}1}$', ha='center', va='top', fontsize=16, fontweight='bold')
+ax_b.text(p2_x, -1.0, r'$\boldsymbol{p}_{\mathrm{proj}2}$', ha='center', va='top', fontsize=16, fontweight='bold')
 
 # 追加点 (●)
 new_p1_x = p1_x + offset
@@ -104,14 +104,14 @@ ax_b.plot(new_p2_x, 0, 'o', color='black', markersize=12, zorder=3)
 # 説明テキスト
 ax_b.annotate('', xy=(p2_x, 0.5), xytext=(p1_x, 0.5),
               arrowprops=dict(arrowstyle='<->', lw=2.0, color='black'))
-ax_b.text(5, 1.0, r'$\| \mathbf{p}_{\mathrm{proj1}} - \mathbf{p}_{\mathrm{proj2}} \| > d_{\mathrm{sample}}$', ha='center', fontsize=16, fontweight='bold')
+ax_b.text(5, 1.0, r'$\| \boldsymbol{p}_{\mathrm{proj1}} - \boldsymbol{p}_{\mathrm{proj2}} \| > d_{\mathrm{sample}}$', ha='center', fontsize=16, fontweight='bold')
 ax_b.text(5, 2.5, '射影点から一定距離内側に\n境界点を追加', ha='center', fontsize=16)
 
 # 説明矢印（直線）
 arrow_props = dict(arrowstyle='->', lw=2.0, color='black')
 
 # タイトル
-ax_b.text(5, -3.5, '(b) サンプリング (間隔が大きい場合)', ha='center', fontsize=18)
+ax_b.text(5, -3.5, '(b) 射影点の間隔が大きい場合', ha='center', fontsize=18)
 ax_b.set_ylim(-4, 4) # Y軸範囲調整
 
 
@@ -125,8 +125,8 @@ mid_x_c = (p1_x_c + p2_x_c) / 2
 # 射影点 (x)
 ax_c.plot(p1_x_c, 0, 'x', color='black', markersize=14, markeredgewidth=3, zorder=3)
 ax_c.plot(p2_x_c, 0, 'x', color='black', markersize=14, markeredgewidth=3, zorder=3)
-ax_c.text(p1_x_c, -1.0, r'$\mathbf{p}_{\mathrm{proj}1}$', ha='center', va='top', fontsize=16, fontweight='bold')
-ax_c.text(p2_x_c, -1.0, r'$\mathbf{p}_{\mathrm{proj}2}$', ha='center', va='top', fontsize=16, fontweight='bold')
+ax_c.text(p1_x_c, -1.0, r'$\boldsymbol{p}_{\mathrm{proj}1}$', ha='center', va='top', fontsize=16, fontweight='bold')
+ax_c.text(p2_x_c, -1.0, r'$\boldsymbol{p}_{\mathrm{proj}2}$', ha='center', va='top', fontsize=16, fontweight='bold')
 
 # 追加点 (● 中点)
 ax_c.plot(mid_x_c, 0, 'o', color='black', markersize=12, zorder=3)
@@ -134,11 +134,11 @@ ax_c.plot(mid_x_c, 0, 'o', color='black', markersize=12, zorder=3)
 # 説明テキスト
 ax_c.annotate('', xy=(p2_x_c, 0.5), xytext=(p1_x_c, 0.5),
               arrowprops=dict(arrowstyle='<->', lw=2.0, color='black'))
-ax_c.text(mid_x_c, 1.0, r'$\| \mathbf{p}_{\mathrm{proj1}} - \mathbf{p}_{\mathrm{proj2}} \| < d_{\mathrm{sample}}$', ha='center', fontsize=16, fontweight='bold')
+ax_c.text(mid_x_c, 1.0, r'$\| \boldsymbol{p}_{\mathrm{proj1}} - \boldsymbol{p}_{\mathrm{proj2}} \| \leq d_{\mathrm{sample}}$', ha='center', fontsize=16, fontweight='bold')
 ax_c.text(mid_x_c, 2.5, '射影点の中点に\n境界点を追加', ha='center', fontsize=16)
 
 # タイトル
-ax_c.text(5, -3.5, '(c) サンプリング (間隔が小さい場合)', ha='center', fontsize=18)
+ax_c.text(5, -3.5, '(c) 射影点の間隔が小さい場合', ha='center', fontsize=18)
 ax_c.set_ylim(-4, 4) # Y軸範囲調整
 
 # =========================================

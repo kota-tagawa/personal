@@ -1,82 +1,318 @@
-\chapter{入力画像とテクスチャの特徴点マッチング}
-
-\section{特徴点検出およびマッチングの概要}
-
-本研究では、自己位置推定を行うために、前節までに生成した簡易モデルのテクスチャ画像と入力画像との対応付けを行う。
-具体的には、画像間で対応する特徴点を検出し、それらの対応関係を用いて、入力画像上の2次元特徴点と、3次元モデルに対応付けられたテクスチャ上の点との対応を構築することで、カメラの位置および姿勢を推定する。
-なお、本研究で使用するテクスチャは側面テクスチャに限定する。
-床面は同一テクスチャが連続して用いられることが多く、特徴点の識別が困難であるため、対応付けの対象から除外する。
-
-この対応付けを実現するため、本章では特徴点検出および特徴点マッチングの処理を行う。
-特徴点検出およびマッチング手法は、大きく従来手法と学習ベース手法の二つに分類される。
-従来手法は、画像の輝度勾配や局所構造に基づいて特徴点および記述子を設計する手法であり、計算過程が明確であるという利点を持つ。
-一方で、撮影条件や環境の変化に対する適応性には限界がある。
-これに対して、学習ベース手法は、深層学習を用いて特徴点検出やマッチングの過程をデータから学習する手法である。
-画像全体の文脈情報を考慮した対応付けが可能であり、テクスチャの少ない環境においても比較的安定した対応が得られる。
-その一方で、従来手法と比較して計算コストが大きいという特徴がある。
+\chapter{自己位置推定結果を用いた屋内ナビゲーション}
 
 
-\section{従来手法による特徴点マッチング}
-\subsection{特徴点検出}
-本研究では、代表的な局所特徴点検出手法として SIFT および AKAZE を用いる。
-SIFT は、ガウシアン平滑化により構築されるスケール空間上で極値点を検出し、スケールおよび回転に対して不変な特徴点を得る手法である\cite{Lowe2004}。
-各特徴点に対しては、周囲の勾配分布に基づく特徴量が計算され、高い識別性能を持つ。
-AKAZE は、非線形スケール空間に基づいて特徴点を検出する手法であり、Fast Explicit Diffusion を用いることで高速な処理を可能としている\cite{Alcantarilla2013}。
-記述子にはバイナリ表現が用いられ、後段のマッチング処理を効率的に行うことができる。
-本研究では、入力画像および簡易モデルに対応するテクスチャ画像をグレースケール化した後、それぞれに対して特徴点検出および記述子計算を行う。
-また、データベースとなるテクスチャ画像に対しては、特徴点を事前に計算しておくことで、マッチング時の計算負荷を低減している。
+\section{屋内ナビゲーションの方針}
 
-\subsection{特徴点マッチング} 
-従来手法では、最近傍探索に基づくマッチング手法を採用する。
-記述子間の距離を計算し、最も距離の近い特徴点同士を対応点として選択することで、初期的な対応点集合を得る。
-SIFT のような実数値記述子に対しては KD-tree を用いた探索を行い、AKAZE のようなバイナリ記述子に対しては LSH を用いた探索を行うことで、
-記述子の特性に応じた最近傍探索を実現している。
+\subsection{簡易モデルによる自己位置推定の課題}
 
-\subsection{マッチングの精度向上}
-最近傍探索によって得られる対応点集合には、特徴量の類似度のみでは除去できない誤対応が含まれる可能性がある。  
-そこで本研究では、複数の手法を組み合わせることで、マッチング精度の向上を図る。
-まず、Lowe の比率テストを適用し、第一近傍と第二近傍の距離比が一定以下となる対応点のみを採用することで、曖昧な対応を除去する。
-その後、RANSAC を用いて幾何的整合性に基づく外れ値除去を行う。対応点集合から射影変換モデルを推定し、モデルに適合しない対応点を除外することで、幾何的に整合した対応点集合を得る。
-これらの処理により、自己位置推定に用いる対応点の精度を向上させ、後段の位置および姿勢推定における安定性の確保を図る。
+実際のカメラ入力を用いてリアルタイムに動作させる場合、特徴点マッチング処理に伴う計算コストや通信遅延により、
+推定位置の更新が滞り、端末の実際の位置と乖離する可能性がある。
+さらに、屋内環境ではテクスチャの乏しい壁面や照明変化の影響により、常に十分な特徴量が得られるとは限らず、
+マッチングに失敗して自己位置が更新されない状況も想定される。
+また、屋内ナビゲーションでは利用者がモバイル端末を持って移動するため、自己位置推定には高いリアルタイム性と連続性が求められるが、
+特徴点マッチング単独ではこれらを常に保証することが困難である。
 
-\section{学習ベース手法による特徴点マッチング}
-\subsection{特徴点検出}
-学習ベース手法における特徴点検出手法として SuperPoint を用いる。
-SuperPoint は、画像中の特徴点（Interest Point）とそれらに対応する記述子（Descriptor）を同時に推定する特徴点検出手法である（図\ref{four:one}）。
-画像全体を入力とする畳み込み型ネットワークとして構成されており、共有されたエンコーダによって特徴を抽出した後、特徴点検出用と記述子生成用の2つのデコーダに分岐することで、単一のフォワードパスで両者を出力する。
-この構成により、検出と記述を個別に行う手法と異なり、両タスク間で計算および特徴表現を効率的に共有することが可能となっている\cite{DeTone2018SuperPoint}。
-従来手法では、輝度勾配や局所構造といった人手設計された指標に基づいて特徴点検出が行われるのに対し、大量の画像データを用いた学習による安定した特徴点検出が可能である。
+\subsection{提案手法に基づく屋内ナビゲーションの基本方針}
+
+本研究では、特徴点マッチングに基づく自己位置推定結果を用いて、屋内空間におけるナビゲーションを実現することを目的とする。
+推定した自己位置情報は、ユーザに対して進行方向や目的地までの誘導情報を提示するために用いられる。
+
+しかしながら、前述の通り特徴点マッチングに基づく手法は計算コストが高く、リアルタイム性や安定性の観点から単独での利用には課題がある。
+そのため、本研究では提案する自己位置推定手法をナビゲーションの「絶対的な位置補正」の基準情報として用いつつ、
+自己位置推定間の移動量推定には別の補間手段を導入する方針とする。
+具体的には、モバイル端末に標準的に搭載されている VIO (Visual-Inertial Odometry) による自己位置推定結果を併用する。
+VIOにより高頻度かつ連続的な位置追跡を行い、特徴点マッチングに失敗した場合や推定結果が得られない期間においても、ナビゲーションの連続性を維持する。
+
+\subsection{Visual-Inertial Odometry (VIO) による自己位置推定}
+
+Visual-Inertial Odometry (VIO) は、端末に搭載されたIMU（加速度計・ジャイロスコープ等の慣性センサ）と
+カメラから取得した画像情報を統合することで、端末の位置姿勢を高頻度に推定する手法である。
+本研究では、Apple社が提供するARKitをVIOの実行環境として用いる\cite{AppleARKitTracking}。
+ARKitは、このVIO技術を中核とした自己位置推定フレームワークであり、内部処理において局所的な特徴点マップを構築することで、
+モバイル端末単体での SLAM (Simultaneous Localization and Mapping) に相当する機能を実現している。
+ARKitによる自己位置推定は、端末内のみで処理されるため外部インフラを必要とせず、高いリアルタイム性が確保される。
+一方で、長時間動作させた際の累積誤差（ドリフト）や、カメラ視野が環境特徴に乏しい状況（白い壁のみが映る場合など）では推定精度が低下する可能性がある点に注意が必要である\cite{AppleARKitWorldTracking}。
+
+ARKitでは、ワールド座標系が内部的に定義されており、セッション初期化時の端末位置が原点として設定される。
+座標軸は右手系で定義されており、一般に重力と反対方向（垂直上向き）を$Y$軸とし、
+初期化時のカメラの視線方向に基づいて$Z$軸および$X$軸が決定される。
+以降のフレームにおける端末の位置姿勢は、このワールド座標系に対する相対的な変換行列として逐次更新される。
+
+\subsection{ARKitの座標系の定義}
+本研究では、ARKitによって定義されるワールド座標系をAR座標系と呼ぶ。
+ここで、ユーザが定義する世界座標系を含めた各座標系の関係を図\ref{four:one}に示す。
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.5\textwidth]{figures/4/superpoint_architecture.png}
-    \caption{SuperPointのアーキテクチャ. 出典：DeTone et al.(2018)\cite{DeTone2018SuperPoint} Fig.~1}
+    \includegraphics[width=0.7\textwidth]{figures/4/axis2.png}
+    \caption{世界座標系とARKitカメラ座標系、AR座標系の関係}
     \label{four:one}
   \end{center}
 \end{figure}
 
-本研究では、入力画像および簡易モデルに対応するテクスチャ画像をグレースケール化し、SuperPoint に入力することで特徴点検出および記述子計算を行う。
-画像サイズが大きい場合には画像を複数のタイルに分割し、それぞれに対して特徴点検出を行った後、
-検出結果を統合することで、画像全体の特徴点を抽出している。
-
-\subsection{特徴点マッチング} 
-学習ベース手法における特徴点マッチング手法として SuperGlue を用いる。
-SuperGlue は、注意機構付きグラフニューラルネットワークと最適マッチング層の2つから構成される特徴点マッチング手法である（図\ref{four:two}）。
-注意機構付きグラフニューラルネットワークでは、キーポイントの位置と記述子を統合した特徴表現を自己注意および相互注意を交互に用いて段階的に更新する。
-最適マッチング層では、キーポイント間のスコア行列にdustbin（いずれのキーポイントとも対応しない点を扱うための仮想ノード）を追加した上で、
-Sinkhorn アルゴリズムにより最適な部分対応を推定する\cite{Sarlin2020SuperGlue}。
-従来手法では、各特徴点を独立に対応付ける最近傍探索が行われるのに対し、特徴点集合全体の文脈情報を考慮した対応付けが可能である。
+ここで注意すべき点は、カメラ座標系の軸の符号定義が異なることである。
+OpenCVにおけるカメラ座標系では、$X$軸は右方向、$Y$軸は下方向、$Z$軸は奥行き方向が正となる。
+一方、ARKitにおけるカメラ座標系では、$X$軸は右方向、$Y$軸は上方向、$Z$軸は手前方向が正となる。
+図\ref{four:two}にその定義を示す。
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.9\textwidth]{figures/4/superglue_architecture.png}
-    \caption{SuperGlueのアーキテクチャ. 出典：Sarlin et al.(2020)\cite{Sarlin2020SuperGlue} Fig.~3}
+    \includegraphics[width=0.4\textwidth]{figures/4/arkit_camaxis.png}
+    \caption{ARKitカメラ座標系の定義}
     \label{four:two}
   \end{center}
 \end{figure}
 
-\subsection{マッチングの精度向上}
-SuperGlue により得られた対応点集合には、学習に基づく推定結果であるため、局所的に信頼度の低い対応点が含まれる可能性がある。
-まず、従来手法における ratio test に相当する処理として、SuperGlue の matching score に基づく対応点の選別を行う。
-matching score は，各特徴点対が正しく対応している可能性の高さを表す指標であり、スコアが所定の閾値以上となる対応点のみを採用することで、曖昧な対応を除去する。
-そのあとは同様に、RANSAC を用いて外れ値除去を行う。これにより、学習ベース手法においても従来手法と同等の基準で誤対応を抑制し、自己位置推定に用いる対応点の精度を向上させる。
+自己位置推定結果を補完するためには、ここで示した座標系の違いを考慮した上で、各座標系間の相互変換が必要となる。
+具体的には、ARKitのカメラ座標 $\bm{X}_{\mathrm{camAR}}$ と、本研究で用いるOpenCVのカメラ座標 $\bm{X}_{\mathrm{camPC}}$ の関係は、
+変換行列 $\bm{S}$ を用いて次式で表される。
+
+\begin{align}
+  \bm{X}_{\mathrm{camPC}}
+  = \bm{S} \, \bm{X}_{\mathrm{camAR}}
+  , \quad
+  \bm{S}
+  =
+  \begin{bmatrix}
+  1 & 0 & 0 \\
+  0 & -1 & 0 \\
+  0 & 0 & -1
+  \end{bmatrix}
+  \label{eq:camtransform}
+\end{align}
+
+\section{自己位置推定手法の比較検討方針}
+
+本研究では、屋内ナビゲーションにおける実用的な自己位置推定手法を明らかにするため、
+性質の異なる3つの手法を比較対象として設定した。
+これらは、提案手法単独の場合、既存のモバイル端末における標準的手法の場合、
+および両者を組み合わせた場合をそれぞれ代表するものである。
+
+\begin{enumerate}
+  \item \textbf{提案手法（特徴点マッチングによる自己位置推定）} \\
+        本研究の提案内容そのものの性能を評価するための基準として位置付ける。
+        環境モデルとの対応付けに基づいて絶対的な自己位置推定が可能である一方、計算時間や誤推定が課題となる可能性がある。
+  \item \textbf{ARKitによる自己位置推定} \\
+        モバイル端末上で動作する一般的な自己位置推定手法として位置付ける。
+        リアルタイム性に優れている一方、視覚情報に乏しい環境では精度が低下する可能性がある。
+  \item \textbf{複合的手法（提案手法 + ARKit）} \\
+        提案手法を基準情報として用いつつ、推定が困難な状況では ARKit の推定結果を利用する方式である。
+        これにより、両者の利点を活かしたより安定的かつ実用的な自己位置推定の可能性を検討する。
+\end{enumerate}
+
+以上の3つの手法を比較することで、屋内ナビゲーションにおける実用的な自己位置推定手法の在り方について検証する。
+
+
+\section{屋内ナビゲーションシステムの構成}
+
+屋内ナビゲーションシステムの構成について説明する。システムの流れを図\ref{four:three}に示す。
+
+本システムは、ユーザインターフェースおよびセンシングを担うモバイル端末と、
+高負荷な自己位置推定処理を担うPCサーバーによって構成される。
+
+処理の全体的な流れは以下の通りである。
+まず、ユーザがモバイル端末上で目的地を設定すると、ナビゲーションが開始される。
+モバイル端末は、取得したカメラ画像およびARKitのトラッキング情報をPCへ送信する。
+PC側では、受信した画像と簡易3次元モデルを用いて特徴点マッチングを行い、世界座標系における厳密なカメラ位置姿勢を算出する。
+その結果がモバイル端末へフィードバックされることで、端末内部のAR座標系（VIO）と世界座標系の間で整合性が取られ、
+正確なルート案内とAR表示が可能となる。以下の節で、各処理の詳細について述べる。
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{c}
+      \includegraphics[width=0.9\linewidth]{figures/4/flow.png}
+  \end{tabular}
+  \caption{屋内ナビゲーションシステムの構成}
+  \label{four:three}
+\end{figure}
+
+\subsection{目的地設定}
+
+マップ画像上でのタップ操作により目的地を指定する方法を用いる。
+ユーザは表示されたマップ画像上を順にタップすることで、目的地までの経路点を指定する。
+各タップ位置は、マップ上の画像座標として取得される。入力が確定すると、あらかじめ算出したマップ上の画像座標と世界座標を対応付けるホモグラフィ行列を用いて、世界座標系へ変換する。
+変換後の世界座標列は、後続の自己位置推定およびナビゲーション処理における目的地情報として利用する。
+
+\subsection{カメラ画像取得および端末とPC間の通信}
+
+端末側では、カメラ画像と撮影時刻を取得し、初期位置推定時は、カメラの内部パラメータも併せて取得する。
+また、撮影時におけるAR座標系とカメラ座標系の変換行列を保存する。
+取得したカメラ画像は、通信負荷を低減するために圧縮処理を行う。
+2回目以降の推定では、ARKitにより更新されたカメラの位置姿勢情報も用い、これらをJSON形式にまとめ、WebSocketを用いた双方向通信によってPCへ送信する。
+
+PCで推定されたカメラの位置姿勢情報は、同じくWebSocketを介して端末側へ送信され、世界座標系とAR座標系の関係の更新に用いられる。
+なお、一定時間以上姿勢情報が受信されない場合には、自己位置が喪失したものと判断し、初期位置推定を再度実行する。
+
+\subsection{自己位置推定結果の受信および座標系の更新}
+
+端末側では、PCで推定された世界座標系とカメラ座標系の変換行列を受信する。
+受信した世界座標系とカメラ座標系の回転行列 $\bm{R}_{\mathrm{world}\rightarrow\mathrm{camPC}}$
+および並進ベクトル $\bm{t}_{\mathrm{world}\rightarrow\mathrm{camPC}}$ と、
+撮影時におけるAR座標系とカメラ座標系の変換行列 $\bm{T}_{\mathrm{camAR}\rightarrow\mathrm{AR}}$
+を用いて、世界座標系とAR座標系の変換行列を更新する。
+これにより、世界座標系とAR座標系の相互変換が可能となり、PCによる自己位置推定が困難なタイミングにおいても、ARKitによる自己位置推定結果を継続的に利用できる。
+更新された座標系の関係は、目的地のARオブジェクトの描画や、カメラの位置姿勢を世界座標系へ変換する際に用いられる。
+変換行列を更新した後、一定時間経過後に再度カメラ画像を取得し、PCによる自己位置推定を行う。
+
+\subsection{世界座標系とAR座標系の相互変換}
+
+本システムにおいて、ARKitによって管理されるAR座標系と、簡易モデルが定義されている世界座標系は、原点および座標軸の定義が異なる。
+そのため、以下の2つの目的を実現するには、両座標系間の相互変換が必要となる。
+
+\begin{enumerate}
+  \item \textbf{世界座標系からAR座標系の変換} \\
+  世界座標系で定義された目的地を、モバイル端末のカメラ映像上の正しい位置に重畳表示するためには、
+  目的地の座標をAR座標系へ変換する必要がある。
+
+  \item \textbf{AR座標系から世界座標系の変換} \\
+  ARKitによって高頻度に追跡される端末の位置姿勢をPCへ送信し、特徴点マッチングによる自己位置推定結果と比較するためには、
+  端末の位置姿勢を世界座標系へ変換する必要がある。
+\end{enumerate}
+
+以下に、これらの変換を実現するための行列の導出過程を示す。
+
+ARKitでは、毎フレームカメラ変換行列 $\bm{T}_{\mathrm{camAR}\rightarrow\mathrm{AR}}$ が与えられる。
+これはARKitのカメラ座標系からAR座標系への変換を表す $4\times{4}$ の同次変換行列であり、次式で定義される。
+\begin{equation}
+  \bm{T}_{\mathrm{camAR}\rightarrow\mathrm{AR}} =
+  \begin{pmatrix}
+  \bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}} & \bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}} \\
+  \bm{0}^{\top} & 1
+  \end{pmatrix}
+\end{equation}
+ここで，$\bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}$ はARKitのカメラ座標系からAR座標系への回転行列、
+$\bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}}$ はAR座標系におけるカメラ中心位置を表す並進ベクトルである。
+
+よって、AR座標系における座標 $\bm{X}_{\mathrm{AR}}$ は、ARKitのカメラ座標 $\bm{X}_{\mathrm{camAR}}$ から式\ref{eq:one}で求められる。
+\begin{equation}
+  \bm{X}_{\mathrm{AR}}
+  =
+  \bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
+  \bm{X}_{\mathrm{camAR}}
+  +
+  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \label{eq:one}
+\end{equation}
+
+一方、世界座標系における座標 $\bm{X}_{\mathrm{world}}$ は、OpenCVのカメラ座標 $\bm{X}_{\mathrm{camPC}}$ から式\ref{eq:two}で求められる。
+\begin{equation}
+  \bm{X}_{\mathrm{camPC}}
+  =
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \bm{X}_{\mathrm{world}}
+  +
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \label{eq:two}
+\end{equation}
+
+ここで、式(\ref{eq:camtransform})で示した通り、
+ARKitのカメラ座標系とOpenCVのカメラ座標系には軸定義の違いによる変換行列 $\bm{S}$ が介在する。
+式(\ref{eq:two})および式(\ref{eq:camtransform})を式(\ref{eq:one})に代入することで、世界座標系からAR座標系への変換は次のように整理される。
+\begin{align}
+  \bm{X}_{\mathrm{AR}}
+  &=
+  \bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \left(
+    \bm{S} (
+      \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
+      \bm{X}_{\mathrm{world}}
+      +
+      \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+    )
+  \right)
+  +
+  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \\
+  &=
+  (\bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{S}
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}})
+  \bm{X}_{\mathrm{world}}
+  +
+  (\bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{S}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  +
+  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}})
+\end{align}
+
+したがって、世界座標系からAR座標系への変換行列 $\bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}, \bm{t}_{\mathrm{world}\rightarrow\mathrm{AR}}$ は次式で求められる。
+\begin{align}
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}
+  &=
+  \bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{S}
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \\
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{AR}}
+  &=
+  \bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{S}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  +
+  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \label{eq:four}
+\end{align}
+
+逆に、AR座標系から世界座標系への変換行列 $\bm{R}_{\mathrm{AR}\rightarrow\mathrm{world}}, \bm{t}_{\mathrm{AR}\rightarrow\mathrm{world}}$ は、式(\ref{eq:four})の逆変換として次式で導出される。
+\begin{align}
+  \bm{X}_{\mathrm{world}}
+  &=
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}^{\top}
+  \bm{X}_{\mathrm{AR}}
+  -
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}^{\top}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{AR}}
+  \\
+  &=
+  \bm{R}_{\mathrm{AR}\rightarrow\mathrm{world}}\bm{X}_{\mathrm{AR}}
+  +
+  \bm{t}_{\mathrm{AR}\rightarrow\mathrm{world}}
+\end{align}
+ここで、各項は以下の通りである。
+\begin{align}
+  \bm{R}_{\mathrm{AR}\rightarrow\mathrm{world}}
+  &=
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}^{\top} \nonumber
+  \\
+  &=
+  (\bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{S}
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  )^{\top}
+  \\
+  \bm{t}_{\mathrm{AR}\rightarrow\mathrm{world}}
+  &=
+  -
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}^{\top}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{AR}} \nonumber
+  \\
+  &=
+  -
+  \bm{R}_{\mathrm{AR}\rightarrow\mathrm{world}}
+  (
+  \bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{S}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  +
+  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  )
+  \label{eq:five}
+\end{align}
+
+\subsection{目的地および進行方向オブジェクトの描画}
+更新された世界座標系とAR座標系の関係に基づき、目的地および進行方向を示すARオブジェクトの描画を行う。
+まず、マップから取得した経路上の目的地座標を世界座標系で取得し、前節で求めた変換式を用いてAR座標系への変換を行うことで、AR空間上における目的地の描画位置を算出する。
+
+算出されたAR座標系上の位置に対してARアンカーを生成する。
+ARアンカーは、AR空間中の特定位置に仮想オブジェクトを安定して配置するための基準点として用いられ、端末の移動に伴っても一貫した位置関係を保つ役割を持つ。
+生成したアンカーに目的地を示すオブジェクトを紐付けることで、目的地をカメラ映像上の正しい位置に重畳表示する。
+目的地が更新された場合には、既存のアンカーを削除し、新たな座標に基づいてアンカーを再生成する。
+
+また、各フレームにおいてカメラの位置姿勢を取得し、カメラ前方に進行方向を示す矢印オブジェクトを配置する。
+矢印オブジェクトが目的地の方向を向くように姿勢を更新することで、ユーザに対して目的地までの直感的な誘導を実現する。
+さらに、カメラの位置および前方方向ベクトルを毎フレーム更新することで、自己位置推定結果を継続的に利用可能とし、
+PCによる自己位置推定結果が適切であるかを判断するための指標としても用いることができる。
+
+カメラ位置と目的地オブジェクトとの距離を算出し、一定の閾値以内に到達した場合には、目的地に到着したと判定する。
+経路上に複数の目的地が存在する場合には、次の目的地へ切り替え、対応するARオブジェクトの更新を行う。
