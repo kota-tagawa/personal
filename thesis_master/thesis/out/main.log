@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.sjis) (TeX Live 2025) (preloaded format=platex 2025.4.6)  5 FEB 2026 19:17
+This is e-upTeX, Version 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.sjis) (TeX Live 2025) (preloaded format=platex 2025.4.6)  5 FEB 2026 19:22
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -627,9 +627,6 @@ Overfull \hbox (15.65001pt too wide) in paragraph at lines 267--275
 [34]
 
 [35]
-
-LaTeX Warning: Reference `localization' on page 36 undefined on input line 310.
-
 File: figures/5/deep4m.png Graphic file (type bmp)
 <figures/5/deep4m.png>
 File: figures/5/deep3m.png Graphic file (type bmp)
@@ -664,11 +661,7 @@ Overfull \hbox (18.00993pt too wide) in paragraph at lines 407--422
 
 
 
-[38]
-
-LaTeX Warning: Reference `localization' on page 39 undefined on input line 446.
-
-) (./six.tex
+[38]) (./six.tex
 
 [39]
 第 6 章
@@ -705,19 +698,16 @@ pLaTeX2e <2023-02-14>+1, based on
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 464E2FCE3300C70CDC8BC402655A5EEE;12343.
  ) 
 Here is how much of TeX's memory you used:
  11934 strings out of 475301
  186985 string characters out of 5768500
- 587795 words of memory out of 5000000
+ 587846 words of memory out of 5000000
  34828 multiletter control sequences out of 15000+600000
  578955 words of font info for 116 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  72i,13n,79p,400b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on out/main.dvi (46 pages, 255372 bytes).
+Output written on out/main.dvi (46 pages, 255504 bytes).
