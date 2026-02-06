@@ -18,14 +18,14 @@
 推定した自己位置情報は、ユーザに対して進行方向や目的地までの誘導情報を提示するために用いられる。
 
 しかしながら、前述の通り特徴点マッチングに基づく手法は計算コストが高く、リアルタイム性や安定性の観点から単独での利用には課題がある。
-そのため、本研究では提案する自己位置推定手法をナビゲーションの「絶対的な位置補正」の基準情報として用いつつ、
+そのため、本研究では提案する自己位置推定手法をナビゲーションの絶対的な位置補正の基準情報として用いつつ、
 自己位置推定間の移動量推定には別の補間手段を導入する方針とする。
 具体的には、モバイル端末に標準的に搭載されている VIO (Visual-Inertial Odometry) による自己位置推定結果を併用する。
 VIOにより高頻度かつ連続的な位置追跡を行い、特徴点マッチングに失敗した場合や推定結果が得られない期間においても、ナビゲーションの連続性を維持する。
 
 \subsection{Visual-Inertial Odometry (VIO) による自己位置推定}
 
-Visual-Inertial Odometry (VIO) は、端末に搭載されたIMU（加速度計・ジャイロスコープ等の慣性センサ）と
+Visual-Inertial Odometry (VIO) は、端末に搭載されたIMU（加速度計、ジャイロスコープ等の慣性センサ）と
 カメラから取得した画像情報を統合することで、端末の位置姿勢を高頻度に推定する手法である。
 本研究では、Apple社が提供するARKitをVIOの実行環境として用いる\cite{AppleARKitTracking}。
 ARKitは、このVIO技術を中核とした自己位置推定フレームワークであり、内部処理において局所的な特徴点マップを構築することで、
@@ -98,7 +98,7 @@ ARKitのカメラ座標 $\bm{X}_{\mathrm{camAR}}$ と、本研究で用いるOpe
 屋内ナビゲーションシステムの構成について説明する。システムの流れを図\ref{four:three}に示す。
 
 本システムは、ユーザインターフェースおよびセンシングを担うモバイル端末と、
-高負荷な自己位置推定処理を担うPCサーバーによって構成される。
+高負荷な自己位置推定処理を担うPCサーバによって構成される。
 
 処理の全体的な流れは以下の通りである。
 まず、ユーザがモバイル端末上で目的地を設定すると、ナビゲーションが開始される。
@@ -170,28 +170,28 @@ ARKitでは、毎フレームカメラ変換行列 $\bm{T}_{\mathrm{camAR}\right
   \bm{0}^{\top} & 1
   \end{pmatrix}
 \end{equation}
-ここで，$\bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}$ はARKitのカメラ座標系からAR座標系への回転行列、
+ここで、$\bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}$ はARKitのカメラ座標系からAR座標系への回転行列、
 $\bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}}$ はAR座標系におけるカメラ中心位置を表す並進ベクトルである。
 
-よって、AR座標系における座標 $\bm{X}_{\mathrm{AR}}$ は、ARKitのカメラ座標 $\bm{X}_{\mathrm{camAR}}$ から式\ref{eq:one}で求められる。
+よって、AR座標系における座標 $\bm{X}_{\mathrm{AR}}$ は、ARKitのカメラ座標 $\bm{X}_{\mathrm{camAR}}$ から式(\ref{eq:one})で求められる。
 \begin{equation}
   \bm{X}_{\mathrm{AR}}
   =
   \bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \bm{X}_{\mathrm{camAR}}
   +
-  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \label{eq:one}
 \end{equation}
 
-一方、世界座標系における座標 $\bm{X}_{\mathrm{world}}$ は、OpenCVのカメラ座標 $\bm{X}_{\mathrm{camPC}}$ から式\ref{eq:two}で求められる。
+一方、世界座標系における座標 $\bm{X}_{\mathrm{world}}$ は、OpenCVのカメラ座標 $\bm{X}_{\mathrm{camPC}}$ から式(\ref{eq:two})で求められる。
 \begin{equation}
   \bm{X}_{\mathrm{camPC}}
   =
-  \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{camPC}}
   \bm{X}_{\mathrm{world}}
   +
-  \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{camPC}}
   \label{eq:two}
 \end{equation}
 
@@ -201,46 +201,54 @@ ARKitのカメラ座標系とOpenCVのカメラ座標系には軸定義の違い
 \begin{align}
   \bm{X}_{\mathrm{AR}}
   &=
-  \bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
+  \left(
+    \bm{S} \bm{X}_{\mathrm{camPC}}
+  \right)
+  +
+  \bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
+  \\
+  &=
+  \bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \left(
     \bm{S} (
-      \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
+      \bm{R}_{\mathrm{world}\rightarrow\mathrm{camPC}}
       \bm{X}_{\mathrm{world}}
       +
-      \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+      \bm{t}_{\mathrm{world}\rightarrow\mathrm{camPC}}
     )
   \right)
   +
-  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \\
   &=
-  (\bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  (\bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \bm{S}
-  \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}})
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{camPC}})
   \bm{X}_{\mathrm{world}}
   +
-  (\bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  (\bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \bm{S}
-  \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{camPC}}
   +
-  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}})
+  \bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}})
 \end{align}
 
 したがって、世界座標系からAR座標系への変換行列 $\bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}, \bm{t}_{\mathrm{world}\rightarrow\mathrm{AR}}$ は次式で求められる。
 \begin{align}
   \bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}
   &=
-  \bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \bm{S}
-  \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{camPC}}
   \\
   \bm{t}_{\mathrm{world}\rightarrow\mathrm{AR}}
   &=
-  \bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \bm{S}
-  \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{camPC}}
   +
-  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \label{eq:four}
 \end{align}
 
@@ -266,9 +274,9 @@ ARKitのカメラ座標系とOpenCVのカメラ座標系には軸定義の違い
   \bm{R}_{\mathrm{world}\rightarrow\mathrm{AR}}^{\top} \nonumber
   \\
   &=
-  (\bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  (\bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \bm{S}
-  \bm{R}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \bm{R}_{\mathrm{world}\rightarrow\mathrm{camPC}}
   )^{\top}
   \\
   \bm{t}_{\mathrm{AR}\rightarrow\mathrm{world}}
@@ -281,11 +289,11 @@ ARKitのカメラ座標系とOpenCVのカメラ座標系には軸定義の違い
   -
   \bm{R}_{\mathrm{AR}\rightarrow\mathrm{world}}
   (
-  \bm{R}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{R}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   \bm{S}
-  \bm{t}_{\mathrm{world}\rightarrow\mathrm{cam}}
+  \bm{t}_{\mathrm{world}\rightarrow\mathrm{camPC}}
   +
-  \bm{t}_{\mathrm{cam}\rightarrow\mathrm{AR}}
+  \bm{t}_{\mathrm{camAR}\rightarrow\mathrm{AR}}
   )
   \label{eq:five}
 \end{align}
@@ -302,7 +310,7 @@ ARアンカーは、AR空間中の特定位置に仮想オブジェクトを安�
 
 また、各フレームにおいてカメラの位置姿勢を取得し、カメラ前方に進行方向を示す矢印オブジェクトを配置する。
 矢印オブジェクトが目的地の方向を向くように姿勢を更新することで、ユーザに対して目的地までの直感的な誘導を実現する。
-さらに、カメラの位置および前方方向ベクトルを毎フレーム更新することで、自己位置推定結果を継続的に利用可能とし、
+さらに、カメラの位置および視線ベクトルを毎フレーム更新することで、自己位置推定結果を継続的に利用可能とし、
 PCによる自己位置推定結果が適切であるかを判断するための指標としても用いることができる。
 
 カメラ位置と目的地オブジェクトとの距離を算出し、一定の閾値以内に到達した場合には、目的地に到着したと判定する。

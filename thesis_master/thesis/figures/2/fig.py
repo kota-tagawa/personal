@@ -5,18 +5,19 @@ import numpy as np
 # === Windows用フォント設定 (Windows以外ではコメントアウトしても良い) ===
 plt.rcParams['font.family'] = 'MS Gothic'
 
-# 図全体の定義（レイアウト設定）
-fig = plt.figure(figsize=(14, 8))
-# width_ratiosで左右の幅の比率を調整。wspace, hspaceで間隔を調整。
-gs = fig.add_gridspec(2, 2, width_ratios=[1.3, 1], wspace=0.15, hspace=0.3)
+# 図全体の定義（レイアウト設定：横長に変更）
+fig = plt.figure(figsize=(18, 6))
 
-# サブプロットの配置
-ax_a = fig.add_subplot(gs[:, 0]) # 左側 (a) 縦ぶち抜き
-ax_b = fig.add_subplot(gs[0, 1]) # 右上 (b)
-ax_c = fig.add_subplot(gs[1, 1]) # 右下 (c)
+# 1行3列に変更。width_ratiosはすべて等幅(1:1:1)で設定
+gs = fig.add_gridspec(1, 3, wspace=0.2)
 
-# 凡例用の軸を最下部に作成
-ax_legend = fig.add_axes([0.1, 0.02, 0.8, 0.05])
+# サブプロットの配置 (横並び)
+ax_a = fig.add_subplot(gs[0]) # 左 (a)
+ax_b = fig.add_subplot(gs[1]) # 中 (b)
+ax_c = fig.add_subplot(gs[2]) # 右 (c)
+
+# 凡例用の軸を最下部に作成 (位置を少し調整)
+ax_legend = fig.add_axes([0.1, 0.01, 0.8, 0.05])
 ax_legend.axis('off')
 
 
@@ -31,17 +32,17 @@ def draw_floor_base(ax, p0_label=r'$\boldsymbol{p}_0$', p1_label=r'$\boldsymbol{
     ax.plot(10, 0, 'o', color='black', markersize=12, zorder=3)
     ax.text(0, -1.0, p0_label, ha='center', va='top', fontsize=18, fontweight='bold')
     ax.text(10, -1.0, p1_label, ha='center', va='top', fontsize=18, fontweight='bold')
-    # X軸の範囲を少し広めに取って文字が切れないようにする
+    # X軸の範囲を統一
     ax.set_xlim(-1, 11)
 
 
 # =========================================
-# (a) 射影と検証（左側）
+# (a) 射影と検証（左）
 # =========================================
 draw_floor_base(ax_a)
-cx, cy = 5, 7  # カメラ位置（中央寄りに変更）
+cx, cy = 5, 7  # カメラ位置
 px, py = 5, 0  # 射影点
-d_th = 7.5      # 閾値距離（円の半径）
+d_th = 7.5      # 閾値距離
 
 # カメラ
 ax_a.plot(cx, cy, 'x', color='black', markersize=14, markeredgewidth=3, zorder=3)
@@ -68,26 +69,24 @@ ax_a.text(px/2, 0.8, r'$t\boldsymbol{d}$', ha='center', fontsize=20, fontweight=
 
 ax_a.text(cx - 2.0,  cy - 3.0, r'$d_{\mathrm{th}}$', fontsize=20)
 
-
-# 条件式ボックス (白い四角で囲む)
+# 条件式ボックス
 text_box_content = r'$0 \leq t \leq 1$' + '\n' + r'$\|\boldsymbol{c} - \boldsymbol{p}_{\mathrm{proj}}\| \leq d_{\mathrm{th}}$'
-box_x, box_y = cx + 0.5, cy - 3.0 # 位置調整
+box_x, box_y = cx + 0.5, cy - 3.0
 rect_box = patches.Rectangle((box_x, box_y), 5.5, 2.5, linewidth=1.5, edgecolor='black', facecolor='white', zorder=4)
 ax_a.add_patch(rect_box)
 ax_a.text(box_x + 2.7, box_y + 1.25, text_box_content, fontsize=16, ha='center', va='center', zorder=5)
 
 # タイトル
-ax_a.text(5, -3.5, '(a) カメラ位置を射影', ha='center', fontsize=18)
-# Y軸の表示範囲を調整してタイトルが見えるようにする
-ax_a.set_ylim(-4, cy + d_th + 1)
+ax_a.text(5, -4.5, '(a) カメラ位置を射影', ha='center', fontsize=18)
+ax_a.set_ylim(-5, cy + 1) # Y軸範囲調整（タイトルが入るように下を広げる）
 
 
 # =========================================
-# (b) サンプリング：間隔が大きい（右上）
+# (b) サンプリング：間隔が大きい（中）
 # =========================================
 draw_floor_base(ax_b)
 p1_x, p2_x = 2.0, 8.0
-offset = 2.0 # 内側への移動量
+offset = 2.0 
 
 # 射影点 (x)
 ax_b.plot(p1_x, 0, 'x', color='black', markersize=14, markeredgewidth=3, zorder=3)
@@ -98,8 +97,8 @@ ax_b.text(p2_x, -1.0, r'$\boldsymbol{p}_{\mathrm{proj}2}$', ha='center', va='top
 # 追加点 (●)
 new_p1_x = p1_x + offset
 new_p2_x = p2_x - offset
-ax_b.plot(new_p1_x, 0, 'o', color='black', markersize=12, zorder=3)
-ax_b.plot(new_p2_x, 0, 'o', color='black', markersize=12, zorder=3)
+ax_b.plot(new_p1_x, 0, 'o', color='red', markersize=12, zorder=3)
+ax_b.plot(new_p2_x, 0, 'o', color='red', markersize=12, zorder=3)
 
 # 説明テキスト
 ax_b.annotate('', xy=(p2_x, 0.5), xytext=(p1_x, 0.5),
@@ -107,16 +106,14 @@ ax_b.annotate('', xy=(p2_x, 0.5), xytext=(p1_x, 0.5),
 ax_b.text(5, 1.0, r'$\| \boldsymbol{p}_{\mathrm{proj1}} - \boldsymbol{p}_{\mathrm{proj2}} \| > d_{\mathrm{sample}}$', ha='center', fontsize=16, fontweight='bold')
 ax_b.text(5, 2.5, '射影点から一定距離内側に\n境界点を追加', ha='center', fontsize=16)
 
-# 説明矢印（直線）
-arrow_props = dict(arrowstyle='->', lw=2.0, color='black')
-
 # タイトル
-ax_b.text(5, -3.5, '(b) 射影点の間隔が大きい場合', ha='center', fontsize=18)
-ax_b.set_ylim(-4, 4) # Y軸範囲調整
+ax_b.text(5, -4.5, '(b) 射影点の間隔が大きい場合', ha='center', fontsize=18)
+# (a)と高さを視覚的に揃えるため、Y軸の表示範囲を(a)に近づける（空白は増える）
+ax_b.set_ylim(-5, 8) 
 
 
 # =========================================
-# (c) サンプリング：間隔が小さい（右下）
+# (c) サンプリング：間隔が小さい（右）
 # =========================================
 draw_floor_base(ax_c)
 p1_x_c, p2_x_c = 4.0, 6.0
@@ -129,7 +126,7 @@ ax_c.text(p1_x_c, -1.0, r'$\boldsymbol{p}_{\mathrm{proj}1}$', ha='center', va='t
 ax_c.text(p2_x_c, -1.0, r'$\boldsymbol{p}_{\mathrm{proj}2}$', ha='center', va='top', fontsize=16, fontweight='bold')
 
 # 追加点 (● 中点)
-ax_c.plot(mid_x_c, 0, 'o', color='black', markersize=12, zorder=3)
+ax_c.plot(mid_x_c, 0, 'o', color='red', markersize=12, zorder=3)
 
 # 説明テキスト
 ax_c.annotate('', xy=(p2_x_c, 0.5), xytext=(p1_x_c, 0.5),
@@ -138,20 +135,17 @@ ax_c.text(mid_x_c, 1.0, r'$\| \boldsymbol{p}_{\mathrm{proj1}} - \boldsymbol{p}_{
 ax_c.text(mid_x_c, 2.5, '射影点の中点に\n境界点を追加', ha='center', fontsize=16)
 
 # タイトル
-ax_c.text(5, -3.5, '(c) 射影点の間隔が小さい場合', ha='center', fontsize=18)
-ax_c.set_ylim(-4, 4) # Y軸範囲調整
+ax_c.text(5, -4.5, '(c) 射影点の間隔が小さい場合', ha='center', fontsize=18)
+# (a)と高さを視覚的に揃えるため、Y軸の表示範囲を(a)に近づける
+ax_c.set_ylim(-5, 8)
 
 # =========================================
 # 凡例 (最下部)
 # =========================================
-# 凡例の要素を手動で作成
 legend_elements = [
     plt.Line2D([0], [0], marker='o', color='w', label=': 床境界点', markerfacecolor='black', markersize=12),
     plt.Line2D([0], [0], marker='x', color='w', label=': カメラの射影点', markeredgecolor='black', markersize=14, markeredgewidth=3),
 ]
-# 凡例を描画
 ax_legend.legend(handles=legend_elements, loc='center', ncol=2, frameon=False, fontsize=16)
 
-
-# plt.tight_layout() # grid_specを使っているのでtight_layoutは使わない方が配置が崩れない
 plt.show()
